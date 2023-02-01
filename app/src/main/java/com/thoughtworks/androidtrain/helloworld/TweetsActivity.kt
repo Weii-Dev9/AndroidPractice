@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.thoughtworks.androidtrain.helloworld.adapters.TweetAdapter
 import com.thoughtworks.androidtrain.helloworld.data.source.DataSource
-import com.thoughtworks.androidtrain.helloworld.data.source.DataSourceImpl
 import com.thoughtworks.androidtrain.helloworld.utils.Dependency
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
