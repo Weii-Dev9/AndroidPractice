@@ -3,8 +3,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
+<!--            边框-->
             <stroke android:width="1px" android:color="#1f4ba5" />
             <corners android:radius="20dp" />
+<!--            内部填充-->
             <solid android:color="#1f4ba5" />
         </shape>
     </item>
