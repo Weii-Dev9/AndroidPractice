@@ -10,8 +10,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 
 const val REQUEST_SELECT_CONTACT = 1
 @Suppress("DEPRECATION")
@@ -67,10 +65,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    companion object {
-        const val TAG = "PurchaseConfirmationDialog"
     }
 
 
