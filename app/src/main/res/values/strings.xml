@@ -8,7 +8,7 @@
     <string name="button_5">button 5</string>
     <string name="button_6">button 6</string>
     <string name="button_7">button 7</string>
-    <string name="button_8">button 10 </string>
+    <string name="button_8">button 8 </string>
     <string name="button_9">button 9</string>
     <string name="button_10">button 10</string>
     <string name="Signup">Signup</string>
@@ -27,4 +27,5 @@
     <string name="fragment">fragment</string>
     <string name="android">Android</string>
     <string name="Java">Java</string>
+    <string name="RecyclerView">RecyclerView</string>
 </resources>

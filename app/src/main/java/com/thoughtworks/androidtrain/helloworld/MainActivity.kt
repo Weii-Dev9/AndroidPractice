@@ -42,6 +42,11 @@ class MainActivity : AppCompatActivity() {
         btnFragment.setOnClickListener {
             startActivity(Intent(this@MainActivity, MyFragmentActivity::class.java))
         }
+
+        val btnTweets: Button = findViewById(R.id.btn5)
+        btnTweets.setOnClickListener {
+            startActivity(Intent(this@MainActivity, TweetsActivity::class.java))
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
