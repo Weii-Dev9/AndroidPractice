@@ -9,6 +9,5 @@ data class Tweet(
     val comments: List<Comment>?,
     val error: String?,
     @SerializedName("unknown error")
-    val unknownError: String?,
-    val type: Int?
+    val unknownError: String?
 )
