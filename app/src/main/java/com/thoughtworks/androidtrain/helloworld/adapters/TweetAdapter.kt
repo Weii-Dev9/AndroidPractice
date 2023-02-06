@@ -24,7 +24,7 @@ class TweetAdapter (private val tweets: List<Tweet>) : RecyclerView.Adapter<Twee
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        // Inflate the custom layout
+        // Inflate the custom layout   注意：root为parent时数据显示错误
         val tweetView = inflater.inflate(R.layout.tweets_item_layout, null, false)
         // Return a new holder instance
         return ViewHolder(tweetView)
