@@ -25,7 +25,7 @@ class TweetsActivity : AppCompatActivity() {
         val tweet1 = """[{"content":"Jack", "sender":{"username":"Wang","nick":"Wei"}},
                          {"content":"Jack", "sender":{"username":"Wang","nick":"Wei"}},
                          {"content":"Android is a mobile operating system based on a modified version of the Linux kernel and other open source software, designed primarily for touchscreen mobile devices such as smartphones and tablets.", "sender":{"username":"Wang","nick":"Wei"}},
-                         {"content":"Hellos", "sender":{"username":"Wang","nick":"Wei"}}]"""
+                         {"content":"Hellos", "sender":{"username":"Wang","nick":"Wei"},"type":2}]"""
             .trimMargin()
         val tweets2: List<Tweet> =
             gson.fromJson(tweet1, object : TypeToken<List<Tweet?>?>() {}.type)
