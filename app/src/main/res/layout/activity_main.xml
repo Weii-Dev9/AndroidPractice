@@ -61,11 +61,12 @@
                 android:text="@string/RecyclerView"
                 android:textAllCaps="false" />
             <Button
+                android:id="@+id/btn6"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/gray"
-                android:text="@string/button_6"
+                android:text="@string/thread"
                 android:textAllCaps="false" />
             <Button
                 android:layout_width="250dp"
