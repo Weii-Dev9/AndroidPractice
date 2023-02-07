@@ -69,11 +69,12 @@
                 android:text="@string/thread"
                 android:textAllCaps="false" />
             <Button
+                android:id="@+id/btn7"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/gray"
-                android:text="@string/button_7"
+                android:text="@string/handler"
                 android:textAllCaps="false" />
             <Button
                 android:layout_width="250dp"

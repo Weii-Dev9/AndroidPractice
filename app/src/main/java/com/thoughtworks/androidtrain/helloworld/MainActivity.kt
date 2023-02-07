@@ -52,6 +52,11 @@ class MainActivity : AppCompatActivity() {
         btnThread.setOnClickListener {
             startActivity(Intent(this@MainActivity, ThreadActivity::class.java))
         }
+
+        val btnHandler: Button = findViewById(R.id.btn7)
+        btnHandler.setOnClickListener {
+            startActivity(Intent(this@MainActivity, HandlerActivity::class.java))
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
