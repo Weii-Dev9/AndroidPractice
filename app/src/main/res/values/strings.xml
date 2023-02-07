@@ -31,4 +31,5 @@
     <string name="bottom_text">到底了</string>
     <string name="thread">thread</string>
     <string name="handler">handler</string>
+    <string name="rxjava">rxjava</string>
 </resources>
