@@ -15,11 +15,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class RxJavaActivity : AppCompatActivity() {
     private val composite: CompositeDisposable = CompositeDisposable()
+    private val btn: Button by lazy { findViewById(R.id.rx_btn) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.rx_java_layout)
-        val btn: Button = findViewById(R.id.rx_btn)
         btn.setOnClickListener {
             initData()
         }
@@ -27,7 +27,6 @@ class RxJavaActivity : AppCompatActivity() {
 
 
     private fun initData() {
-        val btn: Button = findViewById(R.id.rx_btn)
         val compositeDisposable = CompositeDisposable()
         Observable.create(ObservableOnSubscribe<String> { emmiter ->
             var i = -1;

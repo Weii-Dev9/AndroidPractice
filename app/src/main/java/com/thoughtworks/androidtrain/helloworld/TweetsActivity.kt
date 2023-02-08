@@ -26,12 +26,12 @@ class TweetsActivity : AppCompatActivity() {
         val rvContents = findViewById<RecyclerView>(R.id.rvContent)
         // Initialize tweets
         val gson = Gson()
-        val tweet1: String? = readFileFromRaw(R.raw.tweets)
-        val tweets2: ArrayList<Tweet> =
-            gson.fromJson(tweet1, object : TypeToken<List<Tweet?>?>() {}.type)
+        val tweetText: String? = readFileFromRaw(R.raw.tweets)
+        val tweets: ArrayList<Tweet> =
+            gson.fromJson(tweetText, object : TypeToken<List<Tweet?>?>() {}.type)
 
         // Create adapter passing in the sample user data
-        val adapter = TweetAdapter(tweets2,applicationContext)
+        val adapter = TweetAdapter(tweets,applicationContext)
         // Attach the adapter to the recyclerview to populate items
         rvContents.adapter = adapter
         // Set layout manager to position the items

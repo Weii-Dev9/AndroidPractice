@@ -14,24 +14,22 @@ class ThreadActivity : AppCompatActivity() {
         btn.text = num.toString()
         btn.setOnClickListener {
             btn.isEnabled = false
-             val th = Thread {
+            num = 0
+            val th = Thread {
                 while (num < 10) {
                     Thread.sleep(1000)
                     num += 1
-                    btn.text = num.toString()
+                    runOnUiThread {
+                        btn.text = num.toString()
+                    }
                 }
                 runOnUiThread {
-                    if (num == 10) {
-                        Thread.sleep(1000)
-                        btn.isEnabled = true
-                        num = 0
-                        btn.text = "0"
-                    }
+                    btn.text = "0"
+                    btn.isEnabled = true
                 }
             }
             th.start()
-
-        }//如何判断终止？
+        }
 
 
     }

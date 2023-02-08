@@ -34,4 +34,7 @@
     <string name="rxjava">rxjava</string>
     <string name="sp">sp</string>
     <string name="btn_know">知道了</string>
+    <string name="hello">Hello!</string>
+    <string name="welcome_back">欢迎您回来</string>
+    <string name="tip">提示信息：\n点击"知道了"不再提示。"</string>
 </resources>
