@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.thoughtworks.androidtrain.helloworld.utils.SharedPreferenceUtils
 
 const val REQUEST_SELECT_CONTACT = 1
 @Suppress("DEPRECATION")
@@ -61,6 +62,11 @@ class MainActivity : AppCompatActivity() {
         val btnRxJava: Button = findViewById(R.id.btn8)
         btnRxJava.setOnClickListener {
             startActivity(Intent(this@MainActivity, RxJavaActivity::class.java))
+        }
+
+        val btnSp: Button = findViewById(R.id.btn9)
+        btnSp.setOnClickListener {
+            startActivity(Intent(this@MainActivity, SpActivity::class.java))
         }
     }
 
