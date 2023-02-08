@@ -27,10 +27,10 @@ class RxJavaActivity : AppCompatActivity() {
     private fun initData() {
         val btn: Button = findViewById(R.id.rx_btn)
         val subscribe: Disposable = Observable.create(ObservableOnSubscribe<String> { emmiter ->
-            var i = 0;
+            var i = -1;
             while (i < 11) {
-                emmiter.onNext(i.toString())
                 i += 1
+                emmiter.onNext(i.toString())
                 SystemClock.sleep(1000)
             }
             emmiter.onComplete()
@@ -48,7 +48,6 @@ class RxJavaActivity : AppCompatActivity() {
             }
         btn.isEnabled = false
         composite.add(subscribe)
-
     }
 
     override fun onDestroy() {
