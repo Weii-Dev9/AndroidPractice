@@ -1,7 +1,6 @@
 package com.thoughtworks.androidtrain.helloworld.adapters
 
 import android.content.Context
-import com.thoughtworks.androidtrain.helloworld.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +8,22 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.thoughtworks.androidtrain.helloworld.R
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 
 @Suppress("IMPLICIT_BOXING_IN_IDENTITY_EQUALS")
-class TweetAdapter(private val tweets: List<Tweet>, private val context: Context) :
+class TweetAdapter(private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mContext: Context = context
+
+    private val tweets: MutableList<Tweet> = ArrayList()
+
+    fun setData(tweets: List<Tweet>) {
+        this.tweets.clear()
+        this.tweets.addAll(tweets)
+        notifyDataSetChanged()
+    }
 
     class TweetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nickSender: TextView = itemView.findViewById(R.id.nickSender)
@@ -27,16 +35,6 @@ class TweetAdapter(private val tweets: List<Tweet>, private val context: Context
     class BottomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-//        val context = parent.context
-//        val inflater = LayoutInflater.from(context)
-//        // Inflate the custom layout   注意：root为parent时数据显示错误
-//        val tweetView = inflater.inflate(R.layout.tweets_item_layout, null, false)
-//        // Return a new holder instance
-//        return TweetViewHolder(tweetView)
-//        // Inflate the custom layout   注意：root为parent时数据显示错误
-//        val tweetView = inflater.inflate(R.layout.tweets_last_item_layout, null, false)
-//        // Return a new holder instance
-//        return BottomViewHolder(tweetView)
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             THE_SECOND_VIEW -> BottomViewHolder(
@@ -59,7 +57,7 @@ class TweetAdapter(private val tweets: List<Tweet>, private val context: Context
                 tweetViewHolder.avatar.setImageResource(R.mipmap.avatar)
             } else {
                 Glide.with(mContext)
-                    .load(tweet.sender.avatar)
+                    .load(tweet.sender!!.avatar)
                     .centerCrop()
                     .into(tweetViewHolder.avatar)
             }
