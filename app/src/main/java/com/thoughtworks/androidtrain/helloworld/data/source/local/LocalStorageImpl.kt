@@ -23,7 +23,7 @@ import java.util.stream.Collectors
 
 @SuppressLint("NotConstructor")
 @Suppress("UPPER_BOUND_VIOLATED_BASED_ON_JAVA_ANNOTATIONS", "DEPRECATED_IDENTITY_EQUALS")
-class LocalStorageImp constructor(private var context: Context) : LocalStorage {
+class LocalStorageImpl constructor(private var context: Context) : LocalStorage {
     private lateinit var gson: Gson
     private val db: AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, "practice-db").build()

@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.Toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -28,15 +27,15 @@ class RxJavaActivity : AppCompatActivity() {
 
     private fun initData() {
         val compositeDisposable = CompositeDisposable()
-        Observable.create(ObservableOnSubscribe<String> { emmiter ->
+        Observable.create { emitter ->
             var i = -1;
             while (i < 10) {
                 i += 1
-                emmiter.onNext(i.toString())
+                emitter.onNext(i.toString())
                 SystemClock.sleep(1000)
             }
-            emmiter.onComplete()
-        }).map { s -> "the number is $s" }
+            emitter.onComplete()
+        }.map { s -> "the number is $s" }
             //io() 的内部实现是是用一个无数量上限的线程池，可以重用空闲的线程，因此多数情况下 io() 比 newThread() 更有效率
             .subscribeOn(Schedulers.io())//指定 subscribe() 发生在 IO 线程【数据处理过程在io】
             .observeOn(AndroidSchedulers.mainThread())//指定的操作（Subscriber 的回调）将在 Android 主线程运行【结果使用在主线程】
