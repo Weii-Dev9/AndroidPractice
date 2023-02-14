@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.room.Room
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.AppDatabase
 import com.thoughtworks.androidtrain.helloworld.utils.Dependency
+import com.thoughtworks.androidtrain.helloworld.utils.schedulers.AndroidSchedulerProvider
+import com.thoughtworks.androidtrain.helloworld.utils.schedulers.SchedulerProvider
 
 class HelloApplication : Application() {
     private lateinit var db: AppDatabase
