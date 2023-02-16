@@ -6,7 +6,9 @@ import com.thoughtworks.androidtrain.helloworld.data.source.local.room.AppDataba
 import com.thoughtworks.androidtrain.helloworld.utils.Dependency
 import com.thoughtworks.androidtrain.helloworld.utils.schedulers.AndroidSchedulerProvider
 import com.thoughtworks.androidtrain.helloworld.utils.schedulers.SchedulerProvider
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class HelloApplication : Application() {
     private lateinit var db: AppDatabase
     private lateinit var dependency: Dependency

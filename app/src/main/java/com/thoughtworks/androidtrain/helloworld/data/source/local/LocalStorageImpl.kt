@@ -33,8 +33,7 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
         //read json
         val tweetText: String? = FileUtils.readFileFromRaw(context, R.raw.tweets)
         return gson.fromJson<ArrayList<Tweet>?>(
-            tweetText,
-            object : TypeToken<List<Tweet?>?>() {}.type
+            tweetText, object : TypeToken<List<Tweet?>?>() {}.type
         )
     }
 
@@ -52,8 +51,7 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
                 senderEntities.stream()
                     //过滤出与该tweet有关的Sender
                     .filter { senderEntity: SenderEntity -> senderEntity.id === tweetEntity.senderId }
-                    .map(this::toSender)
-                    .findFirst()
+                    .map(this::toSender).findFirst()
                     .ifPresent { sender: Sender -> tweet.sender = sender }
 
                 tweet.images = (imageEntities.stream()
@@ -73,11 +71,9 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
                         senderEntities.stream()
                             //过滤出与该Comment有关的Sender
                             .filter { senderEntity: SenderEntity -> senderEntity.id === commentEntity.senderId }
-                            .map(this::toSender)
-                            .findFirst().orElse(null)?.let {
+                            .map(this::toSender).findFirst().orElse(null)?.let {
                                 Comment(
-                                    commentEntity.content,
-                                    it
+                                    commentEntity.content, it
                                 )
                             }
 
@@ -94,19 +90,17 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
             db.runInTransaction { //事务机制
                 tweets.forEach(Consumer { tweet: Tweet ->
                     val tweetEntity: TweetEntity = toRoomTweet(tweet)
-                    tweetEntity.senderId = insertRoomSender(tweet.sender)//Model tweet 转 Entity tweet
+                    tweetEntity.senderId =
+                        insertRoomSender(tweet.sender)//Model tweet 转 Entity tweet
                     val tweetId: Long = db.tweetDao().insert(tweetEntity).blockingGet()//插入数据库
                     tweet.images.forEach { image ->
                         val imageEntity: ImageEntity = toRoomImage(image, tweetId)
                         db.imageDao().insert(imageEntity)?.blockingGet()
                     }
                     tweet.comments.forEach { comment ->
-                        val commentEntity: CommentEntity =
-                            toRoomComment(
-                                comment,
-                                tweetId,
-                                insertRoomSender(comment.sender)
-                            )
+                        val commentEntity: CommentEntity = toRoomComment(
+                            comment, tweetId, insertRoomSender(comment.sender)
+                        )
                         db.commentDao().insert(commentEntity)?.blockingGet()
                     }
                 })

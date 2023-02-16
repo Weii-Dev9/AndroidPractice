@@ -33,12 +33,11 @@ class TweetsActivity : AppCompatActivity() {
         initUI()
     }
 
-
     private fun initViewModel() {
         tweetsViewModel = ViewModelProvider(this)[TweetsViewModel::class.java]
         dependency.getDataSource()
-            ?.let { tweetsViewModel.setDependencies(it,dependency.getSchedulerProvider()) }
-        tweetsViewModel.tweetList.observe(this) { tweets -> adapter.setData(tweets) }//键听ViewModel中的tweetList
+            ?.let { tweetsViewModel.setDependencies(it, dependency.getSchedulerProvider()) }
+        tweetsViewModel.tweetList.observe(this) { tweets -> adapter.setData(tweets) }//监听ViewModel中的tweetList
         tweetsViewModel.fetchTweets()
     }
 
@@ -49,23 +48,6 @@ class TweetsActivity : AppCompatActivity() {
         rvContents.layoutManager = LinearLayoutManager(this)
     }
 
-
-//    private fun fetchData1() {//RxJava
-//        val subscribe: Disposable = dataSource
-//            .fetchTweets()
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(
-//                { tweets -> adapter.setData(tweets) }
-//            ) { throwable ->
-//                Toast.makeText(
-//                    context,
-//                    throwable.message,
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//        compositeDisposable.add(subscribe)
-//    }
 
     private fun fetchData2() {//CoroutineScope 协程
         dataSource = dependency.getDataSource()!!
