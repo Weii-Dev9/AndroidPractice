@@ -3,11 +3,16 @@ package com.thoughtworks.androidtrain.helloworld.data.model
 import com.google.gson.annotations.SerializedName
 
 data class Tweet(
-    val content: String?,
-    val sender: Sender?,
-    val images: List<Image>?,
-    val comments: List<Comment>?,
-    val error: String?,
+    var content: String,
+    var sender: Sender?=null,
+    var images: List<Image>,
+    var comments: List<Comment>,
+    var error: String,
     @SerializedName("unknown error")
-    val unknownError: String?
-)
+    var unknownError: String
+){
+
+    constructor() : this("",null, emptyList(), emptyList(),"","")
+}
+
+
