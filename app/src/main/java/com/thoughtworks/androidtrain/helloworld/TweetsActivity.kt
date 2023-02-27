@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.thoughtworks.androidtrain.helloworld.adapters.TweetAdapter
-import com.thoughtworks.androidtrain.helloworld.data.model.Sender
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 
 class TweetsActivity : AppCompatActivity() {
@@ -17,7 +16,7 @@ class TweetsActivity : AppCompatActivity() {
         initUI()
     }
 
-    private fun initUI(){
+    private fun initUI() {
         // Lookup the recyclerview in activity layout
         val rvContents = findViewById<RecyclerView>(R.id.rvContent)
         // Initialize tweets
@@ -25,11 +24,13 @@ class TweetsActivity : AppCompatActivity() {
         val tweet1 = """[{"content":"Jack", "sender":{"username":"Wang","nick":"Wei"}},
                          {"content":"Jack", "sender":{"username":"Wang","nick":"Wei"}},
                          {"content":"Android is a mobile operating system based on a modified version of the Linux kernel and other open source software, designed primarily for touchscreen mobile devices such as smartphones and tablets.", "sender":{"username":"Wang","nick":"Wei"}},
-                         {"content":"Hellos", "sender":{"username":"Wang","nick":"Wei"}}]"""
+                         {"content":"Hellos", "sender":{"username":"Wang","nick":"Wei"}}
+                         ]"""
             .trimMargin()
-        val tweets2: List<Tweet> =
+        val tweets2: ArrayList<Tweet> =
             gson.fromJson(tweet1, object : TypeToken<List<Tweet?>?>() {}.type)
-//        val tw1 = Tweet(content = "Jack",
+
+//        val tw1 = DataModel.Tweet(content = "Jack",
 //            sender = Sender(username = "Wang", nick = "Wei", ""),
 //            images = null,
 //            comments = null,
@@ -49,7 +50,8 @@ class TweetsActivity : AppCompatActivity() {
 //        val tw11 = tw1.copy(content = "Android is a mobile operating system based on a modified version of the Linux kernel and other\n" +
 //                "open source software, designed primarily for touchscreen mobile devices such as smartphones and\n" +
 //                "tablets.")
-//        val tweets: List<Tweet> = listOf(tw1,tw2,tw3,tw4,tw5,tw6,tw7,tw8,tw9,tw10,tw11)
+//        val tw12 = DataModel.Bottom(text = "到底了")
+//        val tweets2: List<DataModel> = listOf(tw1,tw2,tw3,tw4,tw5,tw6,tw7,tw8,tw9,tw10,tw11,tw12)
 
         // Create adapter passing in the sample user data
         val adapter = TweetAdapter(tweets2)
