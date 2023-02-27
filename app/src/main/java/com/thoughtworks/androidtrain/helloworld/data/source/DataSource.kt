@@ -5,4 +5,5 @@ import io.reactivex.rxjava3.core.Flowable
 
 interface DataSource {
     fun fetchTweets(): Flowable<List<Tweet>>
+    suspend fun fetchTweetsCoroutine(): List<Tweet>
 }
