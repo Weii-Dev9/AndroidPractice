@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 const val REQUEST_SELECT_CONTACT = 1
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
-    @SuppressLint("QueryPermissionsNeeded")
+    @SuppressLint("QueryPermissionsNeeded", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -56,6 +56,11 @@ class MainActivity : AppCompatActivity() {
         val btnHandler: Button = findViewById(R.id.btn7)
         btnHandler.setOnClickListener {
             startActivity(Intent(this@MainActivity, HandlerActivity::class.java))
+        }
+
+        val btnRxJava: Button = findViewById(R.id.btn8)
+        btnRxJava.setOnClickListener {
+            startActivity(Intent(this@MainActivity, RxJavaActivity::class.java))
         }
     }
 
