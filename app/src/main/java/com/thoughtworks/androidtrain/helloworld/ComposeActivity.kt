@@ -1,4 +1,111 @@
-[
+package com.thoughtworks.androidtrain.helloworld
+
+import android.graphics.Paint.Align
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.thoughtworks.androidtrain.helloworld.data.model.Sender
+import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
+import com.thoughtworks.androidtrain.helloworld.utils.FileUtils
+import java.util.ArrayList
+
+class ComposeActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {}
+    }
+
+    @Composable
+    fun Tweets(tweets: List<Tweet>) {
+        LazyColumn {
+
+            //顶部 item{}
+            //内容
+            items(tweets) { tweet ->
+                tweetItem(tweet)
+            }
+            //底部
+            item {
+                BottomText()
+            }
+        }
+    }
+
+    @Composable
+    fun tweetItem(tweet: Tweet) {
+        Row(modifier = Modifier.padding(all = 8.dp)) {
+            Image(
+                painter = painterResource(R.mipmap.avatar),
+                contentDescription = null,
+                modifier = Modifier.size(60.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Column {
+                tweet.sender?.nick?.let {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colors.secondaryVariant,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = tweet.content, style = MaterialTheme.typography.body2
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun BottomText() {
+        Box(
+            modifier = Modifier.fillMaxSize(), Alignment.BottomStart
+        ) {
+            Text(
+                "到底了",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(top = 10.dp).height(60.dp)
+                    .background(Color.LightGray)
+            )
+        }
+    }
+
+
+    @Preview
+    @Composable
+    fun PreviewTweets() {
+        val gson = Gson()
+//        val tweetsStr = FileUtils.readFileFromRaw(applicationContext,R.raw.tweets)
+
+        val tweetsStr = """[
   {
     "id": 1,
     "content": "沙发！",
@@ -98,4 +205,12 @@
       "avatar": "https://thoughtworks-mobile-2018.herokuapp.com/images/user/avatar/004.jpeg"
     }
   }
-]
+]"""
+        val tweets: List<Tweet> = gson.fromJson(
+            tweetsStr, object : TypeToken<List<Tweet>>() {}.type
+        )
+
+        Tweets(tweets)
+    }
+}
+
