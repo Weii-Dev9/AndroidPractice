@@ -10,9 +10,11 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.thoughtworks.androidtrain.helloworld.compose.ComposeActivity
 import com.thoughtworks.androidtrain.helloworld.utils.SharedPreferenceUtils
 
 const val REQUEST_SELECT_CONTACT = 1
+
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     @SuppressLint("QueryPermissionsNeeded", "MissingInflatedId")
@@ -67,6 +69,11 @@ class MainActivity : AppCompatActivity() {
         val btnSp: Button = findViewById(R.id.btn9)
         btnSp.setOnClickListener {
             startActivity(Intent(this@MainActivity, SpActivity::class.java))
+        }
+
+        val btnCompose: Button = findViewById(R.id.btn10)
+        btnCompose.setOnClickListener {
+            startActivity(Intent(this@MainActivity, ComposeActivity::class.java))
         }
     }
 

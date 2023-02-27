@@ -16,7 +16,6 @@ class RemoteDataImpl : RemoteData {
 
     private val gson = Gson()
 
-
     override fun fetchTweets(): Single<List<Tweet>> {
         return Single.create { emitter: SingleEmitter<List<Tweet>> ->
             val request: Request = Request.Builder()
