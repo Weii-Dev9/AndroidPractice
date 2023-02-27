@@ -8,6 +8,7 @@ import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 import com.thoughtworks.androidtrain.helloworld.data.source.DataSource
 import com.thoughtworks.androidtrain.helloworld.data.source.DataSourceImpl
 import com.thoughtworks.androidtrain.helloworld.utils.Dependency
+import com.thoughtworks.androidtrain.helloworld.utils.schedulers.SchedulerProvider
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -18,21 +19,23 @@ class TweetsViewModel : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
     private lateinit var dataSource: DataSource
+    private lateinit var schedulerProvider: SchedulerProvider
 
 
     val tweetList: MutableLiveData<List<Tweet>> by lazy {
         MutableLiveData<List<Tweet>>()
     }
 
-    fun setDependencies(dataSource: DataSource) {
+    fun setDependencies(dataSource: DataSource, schedulerProvider: SchedulerProvider) {
         this.dataSource = dataSource
+        this.schedulerProvider = schedulerProvider
     }
 
     fun fetchTweets() {
         val subscribe: Disposable = dataSource
             .fetchTweets()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
             .subscribe { tweets -> tweetList.postValue(tweets) }
         compositeDisposable.add(subscribe)
     }

@@ -36,7 +36,8 @@ class TweetsActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         tweetsViewModel = ViewModelProvider(this)[TweetsViewModel::class.java]
-        dependency.getDataSource()?.let { tweetsViewModel.setDependencies(it) }
+        dependency.getDataSource()
+            ?.let { tweetsViewModel.setDependencies(it,dependency.getSchedulerProvider()) }
         tweetsViewModel.tweetList.observe(this) { tweets -> adapter.setData(tweets) }//键听ViewModel中的tweetList
         tweetsViewModel.fetchTweets()
     }

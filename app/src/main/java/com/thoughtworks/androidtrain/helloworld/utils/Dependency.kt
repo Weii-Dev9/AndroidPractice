@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.thoughtworks.androidtrain.helloworld.data.source.DataSource
 import com.thoughtworks.androidtrain.helloworld.data.source.DataSourceImpl
+import com.thoughtworks.androidtrain.helloworld.utils.schedulers.AndroidSchedulerProvider
+import com.thoughtworks.androidtrain.helloworld.utils.schedulers.SchedulerProvider
 
 class Dependency constructor(context: Context) {
 
@@ -27,6 +29,8 @@ class Dependency constructor(context: Context) {
 
     private var context: Context? = null
     private var dataSource: DataSourceImpl? = null
+    private val schedulerProvider = AndroidSchedulerProvider()
+
 
     init {
         this.context = context
@@ -36,5 +40,9 @@ class Dependency constructor(context: Context) {
 
     fun getDataSource(): DataSource? {
         return dataSource
+    }
+
+    fun getSchedulerProvider(): SchedulerProvider {
+        return schedulerProvider
     }
 }
