@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName
 
 data class Tweet(
     var content: String,
-    var sender: Sender?=null,
+    var sender: Sender? = null,
     var images: List<Image>,
     var comments: List<Comment>,
-    var error: String,
+    var error: String?,
     @SerializedName("unknown error")
-    var unknownError: String
-){
+    var unknownError: String?
+) {
 
-    constructor() : this("",null, emptyList(), emptyList(),"","")
+    constructor() : this("", null, emptyList(), emptyList(), null, null)
 }
 
 

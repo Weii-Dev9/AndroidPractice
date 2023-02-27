@@ -16,7 +16,6 @@ import java.util.stream.Collectors
 
 
 class DataSourceImpl constructor(context: Context) : DataSource {
-    private lateinit var db: AppDatabase
     private val localStorage = LocalStorageImpl(context)
     private val remoteData = RemoteDataImpl()
     private val tweetsUrl: String = "https://tw-mobile-xian.github.io/moments-data/tweets.json"
@@ -28,7 +27,10 @@ class DataSourceImpl constructor(context: Context) : DataSource {
         remoteData.fetchTweets()
             .subscribeOn(Schedulers.io())
             .subscribe { tweets ->
-                localStorage.updateTweets(tweets).subscribeOn(Schedulers.io()).subscribe()
+                val filteredTweets = tweets.stream()
+                    .filter { tweet -> tweet.error == null && tweet.unknownError == null }
+                    .collect(Collectors.toList())
+                localStorage.updateTweets(filteredTweets).subscribeOn(Schedulers.io()).subscribe()
             }
         //每次获取前都更新数据库，保证每次获取最新数据
         return localStorage.getTweets()
@@ -59,3 +61,4 @@ class DataSourceImpl constructor(context: Context) : DataSource {
         private const val TAG = "DataSourceImp"
     }
 }
+

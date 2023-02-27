@@ -11,6 +11,7 @@ class HelloApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        dependency = Dependency.getInstance(this)!!
         initDatabase()
     }
 
