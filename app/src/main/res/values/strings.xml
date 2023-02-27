@@ -19,4 +19,9 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="or_connect_with">or connect with</string>
     <string name="Signup_with">Sign Up with E-mail</string>
+    <string name="pick_contact">pick_contact</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="order_confirmation">是否确定</string>
+    <string name="ok">OK</string>
 </resources>
