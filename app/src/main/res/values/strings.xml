@@ -32,4 +32,6 @@
     <string name="thread">thread</string>
     <string name="handler">handler</string>
     <string name="rxjava">rxjava</string>
+    <string name="sp">sp</string>
+    <string name="btn_know">知道了</string>
 </resources>
