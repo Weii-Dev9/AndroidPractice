@@ -9,7 +9,7 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical">
             <TextView
@@ -20,19 +20,20 @@
                 android:textSize="25sp"
                 />
             <Button
-                android:id="@+id/btnStartAnotherAty"
+                android:id="@+id/btn1"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/gray"
-                android:text="@string/button_1"
+                android:text="@string/constraint_layout"
                 android:textAllCaps="false" />
 
             <Button
+                android:id="@+id/btn2"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/gray"
-                android:text="@string/button_2"
+                android:text="@string/login"
                 android:textAllCaps="false" />
 
             <Button

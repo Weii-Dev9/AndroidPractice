@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <ImageView
+        android:layout_width="148.9dp"
+        android:layout_height="30.3dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="88dp"
+        android:layout_marginBottom="40dp"
+        android:src="@mipmap/fill_1" />
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="12sp"
+        android:hint="@string/username"
+        android:background="@drawable/bolder"/>
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp"
+        android:hint="@string/password"
+        android:background="@drawable/bolder"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:checked="true"
+            android:text="@string/remember_me"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_password"
+            android:layout_marginStart="100dp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            />
+    </LinearLayout>
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_background"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:layout_marginTop="10dp"
+        android:text="@string/Login"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/or_connect_with"
+        android:layout_marginTop="26.5dp"
+        android:textSize="12sp"
+        android:textColor="#b2b2b2"
+        android:layout_gravity="center_horizontal"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="26.5dp"
+        android:layout_gravity="center_horizontal">
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fb"
+            android:layout_marginEnd="60dp"
+            />
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tw"
+            />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/email"
+        android:textAllCaps="false"
+        android:layout_marginTop="65dp"
+        android:textSize="12sp"
+        android:textColor="#1f4ba5"
+        android:text="@string/Signup_with"
+        />
+
+</LinearLayout>

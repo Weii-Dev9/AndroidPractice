@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">你好世界</string>
-    <string name="button_1">按钮 1</string>
-    <string name="button_2">按钮 2</string>
+    <string name="constraint_layout">约束布局</string>
+    <string name="login">登录</string>
     <string name="button_3">按钮 3</string>
     <string name="practice">Android练习</string>
     <string name="button_4">按钮 4</string>
