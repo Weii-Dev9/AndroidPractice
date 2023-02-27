@@ -45,11 +45,12 @@
                 android:text="@string/pick_contact"
                 android:textAllCaps="false" />
             <Button
+                android:id="@+id/btn4"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/gray"
-                android:text="@string/button_4"
+                android:text="@string/fragment"
                 android:textAllCaps="false" />
             <Button
                 android:layout_width="250dp"

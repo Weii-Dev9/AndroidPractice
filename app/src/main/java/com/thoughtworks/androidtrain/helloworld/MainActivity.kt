@@ -37,6 +37,11 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(intent, REQUEST_SELECT_CONTACT)
             }
         }
+
+        val btnFragment: Button = findViewById(R.id.btn4)
+        btnFragment.setOnClickListener {
+            startActivity(Intent(this@MainActivity, MyFragmentActivity::class.java))
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -60,8 +65,8 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "name: $name \nmobile phone: $number", Toast.LENGTH_LONG)
                         .show();
                     //dialog
-//                    PurchaseConfirmationDialogFragment().show(
-//                        childFragmentManager, "name: $name \nmobile phone: $number")
+                    //PurchaseConfirmationDialogFragment().show(
+                    //childFragmentManager, "name: $name \n mobile phone: $number")
                 }
             }
         }
