@@ -4,96 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="250dp"
                 android:layout_height="match_parent"
-                android:text="@string/practice"
                 android:layout_marginTop="50dp"
-                android:textSize="25sp"
-                />
+                android:text="@string/practice"
+                android:textSize="25sp" />
+
             <Button
                 android:id="@+id/btn1"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/gray"
-                android:text="@string/constraint_layout"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/btn2"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/gray"
-                android:text="@string/login"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/btn3"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/gray"
-                android:text="@string/pick_contact"
-                android:textAllCaps="false" />
-            <Button
-                android:id="@+id/btn4"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/gray"
-                android:text="@string/fragment"
-                android:textAllCaps="false" />
-            <Button
-                android:id="@+id/btn5"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/gray"
-                android:text="@string/RecyclerView"
-                android:textAllCaps="false" />
-            <Button
-                android:id="@+id/btn6"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/gray"
-                android:text="@string/thread"
-                android:textAllCaps="false" />
-            <Button
-                android:id="@+id/btn7"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/gray"
-                android:text="@string/handler"
-                android:textAllCaps="false" />
-            <Button
-                android:id="@+id/btn8"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/gray"
-                android:text="@string/rxjava"
-                android:textAllCaps="false" />
-            <Button
-                android:id="@+id/btn9"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/gray"
-                android:text="@string/sp"
-                android:textAllCaps="false" />
-            <Button
-                android:id="@+id/btn10"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
