@@ -1,64 +1,24 @@
 package com.thoughtworks.androidtrain.helloworld.data.source
 
 import android.content.Context
-import android.util.Log
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 import com.thoughtworks.androidtrain.helloworld.data.source.local.LocalStorageImpl
-import com.thoughtworks.androidtrain.helloworld.data.source.local.room.AppDatabase
 import com.thoughtworks.androidtrain.helloworld.data.source.remote.RemoteDataImpl
-import io.reactivex.rxjava3.core.*
-import io.reactivex.rxjava3.schedulers.Schedulers
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import java.util.stream.Collectors
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.withContext
 
 
 class DataSourceImpl constructor(context: Context) : DataSource {
     private val localStorage = LocalStorageImpl(context)
     private val remoteData = RemoteDataImpl()
-    private val tweetsUrl: String = "https://tw-mobile-xian.github.io/moments-data/tweets.json"
-    private val client: OkHttpClient = OkHttpClient()
-    private lateinit var request: Request
-    private val gson = Gson()
 
-    override fun fetchTweets(): Flowable<List<Tweet>> {
-        remoteData.fetchTweets()
-            .subscribeOn(Schedulers.io())
-            .subscribe { tweets ->
-                val filteredTweets = tweets.stream()
-                    .filter { tweet -> tweet.error == null && tweet.unknownError == null }
-                    .collect(Collectors.toList())
-                localStorage.updateTweets(filteredTweets).subscribeOn(Schedulers.io()).subscribe()
-            }
-        //每次获取前都更新数据库，保证每次获取最新数据
-        return localStorage.getTweets()
-    }
-
-
-    //协程
-    override suspend fun fetchTweetsCoroutine(): List<Tweet> {
-        return requestTweets()
-    }
-
-    private fun requestTweets(): List<Tweet> {
-        request = Request.Builder().url(tweetsUrl).build()
-        val response = client.newCall(request).execute()
-        return if (response.isSuccessful) {
-            val tweetStr = response.body?.string()
-            gson.fromJson(
-                tweetStr,
-                object : TypeToken<List<Tweet>>() {}.type
-            )
-        } else {
-            Log.e(TAG, "Request Tweets failed")
-            emptyList()
+    override suspend fun fetchTweets() = flow {
+        val filteredTweets = remoteData.fetchTweets().filter { tweet ->
+            tweet.error == null && tweet.unknownError == null
         }
-    }
-
-    companion object {
-        private const val TAG = "DataSourceImp"
+        localStorage.updateTweets(filteredTweets)
+        emit(localStorage.getTweets())
     }
 }
 
