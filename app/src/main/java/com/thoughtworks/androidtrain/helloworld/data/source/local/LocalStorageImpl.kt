@@ -2,7 +2,6 @@ package com.thoughtworks.androidtrain.helloworld.data.source.local
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.annotation.WorkerThread
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -17,8 +16,6 @@ import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.Im
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.SenderEntity
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.TweetEntity
 import com.thoughtworks.androidtrain.helloworld.utils.FileUtils
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
 import java.util.stream.Collectors
 
 @SuppressLint("NotConstructor")
@@ -36,7 +33,6 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
             tweetText, object : TypeToken<List<Tweet?>?>() {}.type
         )
     }
-
 
     override suspend fun getTweets(): List<Tweet> {
         val tweetsEntities = db.tweetDao().getAll()
@@ -87,42 +83,36 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
         return tweets
     }
 
-    @WorkerThread
-    override suspend fun updateTweets(tweets: List<Tweet>): Boolean = coroutineScope {
+    override suspend fun updateTweets(tweets: List<Tweet>): Boolean {
         var success = false
-        withContext(Dispatchers.IO) {
-            db.clearAllTables()//delete data
-//            val deferredResults = mutableListOf<Deferred<Unit>>()
-            db.runInTransaction { //事务机制
-                tweets.forEach { tweet ->
-//                    deferredResults.add(async {
-                    launch {
-                        val tweetEntity: TweetEntity = toRoomTweet(tweet)
-                        tweetEntity.senderId =
-                            insertRoomSender(tweet.sender)//Model tweet 转 Entity tweet
+        //delete data
+        db.clearAllTables()
+        //事务机制
+        db.runInTransaction {
+            tweets.forEach { tweet ->
+                val tweetEntity: TweetEntity = toRoomTweet(tweet)
+                //Model tweet 转 Entity tweet
+                tweetEntity.senderId =
+                    insertRoomSender(tweet.sender)
+                //插入数据库
+                val tweetId: Long = db.tweetDao().insert(tweetEntity)
 
-                        val tweetId: Long = db.tweetDao().insert(tweetEntity)//插入数据库
+                tweet.images.forEach { image ->
+                    val imageEntity: ImageEntity = toRoomImage(image, tweetId)
+                    db.imageDao().insert(imageEntity)
+                }
 
-                        tweet.images.forEach { image ->
-                            val imageEntity: ImageEntity = toRoomImage(image, tweetId)
-                            db.imageDao().insert(imageEntity)
-                        }
-
-                        tweet.comments.forEach { comment ->
-                            val commentEntity: CommentEntity = toRoomComment(
-                                comment, tweetId, insertRoomSender(comment.sender)
-                            )
-                            db.commentDao().insert(commentEntity)
-                        }
-                    }
+                tweet.comments.forEach { comment ->
+                    val commentEntity: CommentEntity = toRoomComment(
+                        comment, tweetId, insertRoomSender(comment.sender)
+                    )
+                    db.commentDao().insert(commentEntity)
                 }
             }
-//            deferredResults.awaitAll()
             success = true
         }
-        success
+        return success
     }
-
 
     private fun toTweet(tweetEntity: TweetEntity): Tweet {
         val tweet = Tweet()
@@ -145,7 +135,7 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
         return tweetEntity
     }
 
-    private suspend fun insertRoomSender(sender: Sender?): Long {
+    private fun insertRoomSender(sender: Sender?): Long {
         val senderEntity = toRoomSender(sender)
         return db.senderDao().insert(senderEntity)
     }

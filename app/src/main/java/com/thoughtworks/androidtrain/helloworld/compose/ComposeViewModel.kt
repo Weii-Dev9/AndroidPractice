@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 import com.thoughtworks.androidtrain.helloworld.data.source.DataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
@@ -24,8 +21,9 @@ class ComposeViewModel @Inject constructor(
 
     val tweets: LiveData<List<Tweet>> = tweetList
 
-    suspend fun fetchTweets() {
-        dataSource.fetchTweets().collect { ts ->
+    fun fetchTweets() {
+        viewModelScope.launch {
+            val ts = dataSource.fetchTweets()
             tweetList.postValue(ts)
         }
     }

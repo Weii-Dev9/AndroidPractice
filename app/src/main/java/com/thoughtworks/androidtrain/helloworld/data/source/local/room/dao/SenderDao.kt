@@ -7,13 +7,12 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.SenderEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SenderDao {
     @Query("SELECT * FROM sender")
-    suspend fun getAll(): List<SenderEntity>
+    fun getAll(): List<SenderEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(senderEntity: SenderEntity): Long
+    fun insert(senderEntity: SenderEntity): Long
 }
