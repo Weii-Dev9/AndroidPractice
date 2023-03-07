@@ -32,10 +32,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import coil.compose.rememberAsyncImagePainter
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
-import kotlinx.coroutines.launch
 
 @Composable
 fun TweetsScreen() {
@@ -45,9 +43,7 @@ fun TweetsScreen() {
     DisposableEffect(lifeCycleOwner) {
         val observer = (LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_CREATE) {
-                lifeCycleOwner.lifecycleScope.launch {
-                    tweetsViewModel.fetchTweets()
-                }
+                tweetsViewModel.fetchTweets()
             }
         })
         lifeCycleOwner.lifecycle.addObserver(observer)
