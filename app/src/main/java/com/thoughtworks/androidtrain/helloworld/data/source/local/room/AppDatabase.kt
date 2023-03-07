@@ -11,7 +11,10 @@ import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.Im
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.SenderEntity
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.TweetEntity
 
-@Database(entities = [TweetEntity::class, SenderEntity::class, ImageEntity::class, CommentEntity::class], version = 1)
+@Database(
+    entities = [TweetEntity::class, SenderEntity::class, ImageEntity::class, CommentEntity::class],
+    version = 1
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tweetDao(): TweetDao
     abstract fun senderDao(): SenderDao

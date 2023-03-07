@@ -3,7 +3,6 @@ package com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-
 import androidx.room.PrimaryKey
 
 //两个外键【sender、tweet】

@@ -1,6 +1,8 @@
 package com.thoughtworks.androidtrain.helloworld.compose
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -34,16 +36,16 @@ import coil.compose.rememberAsyncImagePainter
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 
 @Composable
-fun TweetsScreen(
-    tweetsViewModel: ComposeViewModel = hiltViewModel(),
-    lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-) {
+fun TweetsScreen() {
+    val tweetsViewModel: ComposeViewModel = hiltViewModel()
+    val lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+
     DisposableEffect(lifeCycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
+        val observer = (LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_CREATE) {
                 tweetsViewModel.fetchTweets()
             }
-        }
+        })
         lifeCycleOwner.lifecycle.addObserver(observer)
 
         onDispose {
@@ -53,15 +55,17 @@ fun TweetsScreen(
 
     val tweets = tweetsViewModel.tweets.observeAsState().value
 
-    LazyColumn {
-        //顶部 item{}
-        //内容
-        items(tweets!!) { tweet ->
-            TweetItem(tweet)
-        }
-        //底部
-        item {
-            BottomText()
+    tweets?.let {
+        LazyColumn {
+            //顶部 item{}
+            //内容
+            items(it) { tweet ->
+                TweetItem(tweet)
+            }
+            //底部
+            item {
+                BottomText()
+            }
         }
     }
 }

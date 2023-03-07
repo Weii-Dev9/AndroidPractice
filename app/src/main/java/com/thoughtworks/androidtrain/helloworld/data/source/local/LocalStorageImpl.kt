@@ -16,9 +16,6 @@ import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.Im
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.SenderEntity
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.TweetEntity
 import com.thoughtworks.androidtrain.helloworld.utils.FileUtils
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Single
-import java.util.function.Consumer
 import java.util.stream.Collectors
 
 @SuppressLint("NotConstructor")
@@ -28,7 +25,7 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
     private val db: AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, "practice-db").build()
 
-    override fun getTweetsFromRaw(): List<Tweet> {
+    override suspend fun getTweetsFromRaw(): List<Tweet> {
         gson = Gson()
         //read json
         val tweetText: String? = FileUtils.readFileFromRaw(context, R.raw.tweets)
@@ -37,81 +34,88 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
         )
     }
 
-    override fun getTweets(): Flowable<List<Tweet>> {
-        return db.tweetDao().getAll().map { tweetsEntity ->
-            //获取Model Tweet所有值
-            val senderEntities: List<SenderEntity> = db.senderDao().getAll().blockingFirst()
-            val imageEntities: List<ImageEntity> = db.imageDao().getAll().blockingFirst()
-            val commentEntities: List<CommentEntity> = db.commentDao().getAll().blockingFirst()
-            //赋值 Entity -> Model
-            val tweets: MutableList<Tweet> = ArrayList()
+    override suspend fun getTweets(): List<Tweet> {
+        val tweetsEntities = db.tweetDao().getAll()
+        //获取Model Tweet所有值
+        val senderEntities: List<SenderEntity> =
+            db.senderDao().getAll()
+        val imageEntities: List<ImageEntity> =
+            db.imageDao().getAll()
+        val commentEntities: List<CommentEntity> =
+            db.commentDao().getAll()
+        //赋值 Entity -> Model
+        val tweets: MutableList<Tweet> = ArrayList()
 
-            for (tweetEntity in tweetsEntity) {
-                val tweet: Tweet = toTweet(tweetEntity)
-                senderEntities.stream()
-                    //过滤出与该tweet有关的Sender
-                    .filter { senderEntity: SenderEntity -> senderEntity.id === tweetEntity.senderId }
-                    .map(this::toSender).findFirst()
-                    .ifPresent { sender: Sender -> tweet.sender = sender }
+        for (tweetEntity in tweetsEntities) {
+            val tweet: Tweet = toTweet(tweetEntity)
+            senderEntities.stream()
+                //过滤出与该tweet有关的Sender
+                .filter { senderEntity: SenderEntity -> senderEntity.id === tweetEntity.senderId }
+                .map(this::toSender).findFirst()
+                .ifPresent { sender: Sender -> tweet.sender = sender }
 
-                tweet.images = (imageEntities.stream()
-                    //过滤出tweet的images
-                    .filter { imageEntity: ImageEntity -> imageEntity.id === tweetEntity.id }
-                    //赋值
-                    .map<Any> { imageEntity: ImageEntity ->
-                        Image(
-                            imageEntity.url!!
-                        )
-                    }.collect(Collectors.toList()) as List<Image>?)!!
+            tweet.images = (imageEntities.stream()
+                //过滤出tweet的images
+                .filter { imageEntity: ImageEntity -> imageEntity.id === tweetEntity.id }
+                //赋值
+                .map<Any> { imageEntity: ImageEntity ->
+                    Image(
+                        imageEntity.url!!
+                    )
+                }.collect(Collectors.toList()) as List<Image>?)!!
 
-                tweet.comments = commentEntities.stream()
-                    //过滤出 tweet的comment
-                    .filter { commentEntity: CommentEntity -> commentEntity.tweetId === tweetEntity.id }
-                    .map<Any> { commentEntity: CommentEntity ->
-                        senderEntities.stream()
-                            //过滤出与该Comment有关的Sender
-                            .filter { senderEntity: SenderEntity -> senderEntity.id === commentEntity.senderId }
-                            .map(this::toSender).findFirst().orElse(null)?.let {
-                                Comment(
-                                    commentEntity.content, it
-                                )
-                            }
+            tweet.comments = commentEntities.stream()
+                //过滤出 tweet的comment
+                .filter { commentEntity: CommentEntity -> commentEntity.tweetId === tweetEntity.id }
+                .map<Any> { commentEntity: CommentEntity ->
+                    senderEntities.stream()
+                        //过滤出与该Comment有关的Sender
+                        .filter { senderEntity: SenderEntity -> senderEntity.id === commentEntity.senderId }
+                        .map(this::toSender).findFirst().orElse(null)?.let {
+                            Comment(
+                                commentEntity.content, it
+                            )
+                        }
 
-                    }.collect(Collectors.toList()) as List<Comment>
-                tweets.add(tweet)
-            }
-            return@map tweets
+                }.collect(Collectors.toList()) as List<Comment>
+            tweets.add(tweet)
         }
+        return tweets
     }
 
-    override fun updateTweets(tweets: List<Tweet>): Single<Boolean> {
-        return Single.create { emitter ->
-            db.clearAllTables()//delete data
-            db.runInTransaction { //事务机制
-                tweets.forEach(Consumer { tweet: Tweet ->
-                    val tweetEntity: TweetEntity = toRoomTweet(tweet)
-                    tweetEntity.senderId =
-                        insertRoomSender(tweet.sender)//Model tweet 转 Entity tweet
-                    val tweetId: Long = db.tweetDao().insert(tweetEntity).blockingGet()//插入数据库
-                    tweet.images.forEach { image ->
-                        val imageEntity: ImageEntity = toRoomImage(image, tweetId)
-                        db.imageDao().insert(imageEntity)?.blockingGet()
-                    }
-                    tweet.comments.forEach { comment ->
-                        val commentEntity: CommentEntity = toRoomComment(
-                            comment, tweetId, insertRoomSender(comment.sender)
-                        )
-                        db.commentDao().insert(commentEntity)?.blockingGet()
-                    }
-                })
-            }
-            emitter.onSuccess(true)
-        }
-    }
+    override suspend fun updateTweets(tweets: List<Tweet>): Boolean {
+        var success = false
+        //delete data
+        db.clearAllTables()
+        //事务机制
+        db.runInTransaction {
+            tweets.forEach { tweet ->
+                val tweetEntity: TweetEntity = toRoomTweet(tweet)
+                //Model tweet 转 Entity tweet
+                tweetEntity.senderId =
+                    insertRoomSender(tweet.sender)
+                //插入数据库
+                val tweetId: Long = db.tweetDao().insert(tweetEntity)
 
+                tweet.images.forEach { image ->
+                    val imageEntity: ImageEntity = toRoomImage(image, tweetId)
+                    db.imageDao().insert(imageEntity)
+                }
+
+                tweet.comments.forEach { comment ->
+                    val commentEntity: CommentEntity = toRoomComment(
+                        comment, tweetId, insertRoomSender(comment.sender)
+                    )
+                    db.commentDao().insert(commentEntity)
+                }
+            }
+            success = true
+        }
+        return success
+    }
 
     private fun toTweet(tweetEntity: TweetEntity): Tweet {
-        val tweet: Tweet = Tweet()
+        val tweet = Tweet()
         tweet.content = tweetEntity.content.toString()
         return tweet
     }
@@ -133,7 +137,7 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
 
     private fun insertRoomSender(sender: Sender?): Long {
         val senderEntity = toRoomSender(sender)
-        return db.senderDao().insert(senderEntity).blockingGet()
+        return db.senderDao().insert(senderEntity)
     }
 
     private fun toRoomSender(sender: Sender?): SenderEntity {
@@ -161,5 +165,4 @@ class LocalStorageImpl constructor(private var context: Context) : LocalStorage 
         commentEntity.content = comment.content
         return commentEntity
     }
-
 }
