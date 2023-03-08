@@ -60,7 +60,8 @@ fun TweetsScreen() {
             //顶部 item{}
             //内容
             items(it) { tweet ->
-                TweetItem(tweet)
+                if (tweet.content != "")
+                    TweetItem(tweet)
             }
             //底部
             item {
