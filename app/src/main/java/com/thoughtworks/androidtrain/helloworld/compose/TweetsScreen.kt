@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -59,8 +56,15 @@ fun TweetsScreen() {
         LazyColumn {
             //顶部 item{}
             //内容
-            items(it) { tweet ->
-                TweetItem(tweet)
+            items(tweets) { tweet ->
+                if (tweet.content != "" && tweet != tweets.last()) {
+                    TweetItem(tweet)
+                    Divider(
+                        color = Color.LightGray,
+                        thickness = 0.5.dp,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
             //底部
             item {
@@ -72,35 +76,31 @@ fun TweetsScreen() {
 
 @Composable
 private fun TweetItem(tweet: Tweet) {
-    val flag = remember { mutableStateOf(false) }
-    Row(modifier = Modifier.padding(all = 8.dp)) {
+    Row(modifier = Modifier.padding(16.dp)) {
         val painter = rememberAsyncImagePainter(tweet.sender?.avatar)
-        //val painter = painterResource(R.mipmap.avatar)
         Avatar(painter)
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(16.dp))
 
-        Column {
+        Column(horizontalAlignment = Alignment.Start) {
+            val nickColor = Color(0xFF4e7fe4)
             tweet.sender?.nick?.let {
                 Text(
                     text = it,
-                    color = MaterialTheme.colors.secondaryVariant,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = nickColor
                 )
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-            Box(Modifier.fillMaxWidth().clickable(onClick = {
-                flag.value = true
-            })) {
-                Text(
-                    text = tweet.content, style = MaterialTheme.typography.body2,
-                )
-            }
-            if (flag.value) {
-                Comment()
-            }
+            Text(
+                text = tweet.content,
+                style = MaterialTheme.typography.body1,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
         }
     }
 }
