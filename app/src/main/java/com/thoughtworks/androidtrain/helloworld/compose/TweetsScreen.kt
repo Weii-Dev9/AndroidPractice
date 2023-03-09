@@ -2,6 +2,7 @@ package com.thoughtworks.androidtrain.helloworld.compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,8 +23,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -55,15 +59,14 @@ fun TweetsScreen() {
 
     tweets?.let {
         LazyColumn {
-            //顶部 item{}
-            //内容
+
             items(tweets) { tweet ->
                 TweetItem(tweet)
                 if (tweet != tweets.last()) {
                     divider()
                 }
             }
-            //底部
+
             item {
                 BottomText()
             }
@@ -74,15 +77,16 @@ fun TweetsScreen() {
 @Composable
 private fun TweetItem(tweet: Tweet) {
 
-    val value16dp = dimensionResource(id = R.dimen.dp_16)
-    val value8dp = dimensionResource(id = R.dimen.dp_8)
+    val rowPadding = dimensionResource(id = R.dimen.tweet_item_row_padding)
+    val spacerWidth = dimensionResource(id = R.dimen.spacer_width_between_avatar_content)
+    val spacerHeight = dimensionResource(id = R.dimen.spacer_height_between_nick_content)
     val nickColor = colorResource(id = R.color.light_blue)
 
-    Row(modifier = Modifier.padding(value16dp)) {
+    Row(modifier = Modifier.padding(rowPadding)) {
         val painter = rememberAsyncImagePainter(tweet.sender?.avatar)
         Avatar(painter)
 
-        Spacer(modifier = Modifier.width(value16dp))
+        Spacer(modifier = Modifier.width(spacerWidth))
 
         Column(horizontalAlignment = Alignment.Start) {
             tweet.sender?.nick?.let {
@@ -93,15 +97,12 @@ private fun TweetItem(tweet: Tweet) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(value8dp))
+            Spacer(modifier = Modifier.height(spacerHeight))
 
             Text(
                 text = tweet.content,
                 style = MaterialTheme.typography.body1,
             )
-
-            Spacer(modifier = Modifier.height(value16dp))
-
         }
     }
 }
@@ -110,12 +111,13 @@ private fun TweetItem(tweet: Tweet) {
 private fun Avatar(painter: Painter) {
 
     val showDialog = remember { mutableStateOf(false) }
-    val value60dp = dimensionResource(id = R.dimen.dp_60)
+    val avatarSize = dimensionResource(id = R.dimen.avatar_size)
 
     Image(
         painter = painter,
-        contentDescription = "avatar",
-        modifier = Modifier.size(value60dp).clip(CircleShape).clickable { showDialog.value = true },
+        contentDescription = stringResource(R.string.avatar),
+        modifier = Modifier.size(avatarSize).clip(CircleShape)
+            .clickable { showDialog.value = true },
         contentScale = ContentScale.Crop
     )
     if (showDialog.value) {
@@ -128,21 +130,16 @@ private fun Avatar(painter: Painter) {
 @Composable
 private fun BigAvatar(painter: Painter, onDismiss: () -> Unit) {
 
-    val value300dp = dimensionResource(id = R.dimen.dp_300)
-    val value20dp = dimensionResource(id = R.dimen.dp_20)
-    val value200dp = dimensionResource(id = R.dimen.dp_200)
+    val bigAvatarSize = dimensionResource(id = R.dimen.big_avatar_size)
 
     Dialog(onDismissRequest = onDismiss) {
         Box(
             Modifier.fillMaxWidth()
-                .height(value300dp)
-                .padding(value20dp)
-                .background(Color.White)
         ) {
             Image(
                 painter = painter,
-                contentDescription = "BigAvatar",
-                modifier = Modifier.size(value200dp)
+                contentDescription = stringResource(R.string.BigAvatar),
+                modifier = Modifier.size(bigAvatarSize)
                     .clip(CircleShape)
                     .align(Alignment.Center),
                 contentScale = ContentScale.Crop
@@ -152,51 +149,13 @@ private fun BigAvatar(painter: Painter, onDismiss: () -> Unit) {
 }
 
 @Composable
-private fun Comment() {
-    val textValue = remember { mutableStateOf("") }
-    val input = remember { mutableStateOf(true) }
-
-    Row {
-        Box(
-            Modifier.weight(1f)
-        ) {
-            TextField(value = textValue.value, onValueChange = {
-                textValue.value = it
-            }, enabled = input.value)
-        }
-        Box(
-            Modifier.weight(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            Button(onClick = { input.value = false }) {
-                Text(text = "save")
-            }
-        }
-        Box(
-            Modifier.weight(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            Button(onClick = {
-                textValue.value = ""
-                input.value = true
-            }) {
-                Text(text = "cancel")
-            }
-        }
-
-
-    }
-
-}
-
-@Composable
 private fun divider() {
 
-    val value05dp = dimensionResource(id = R.dimen.dp_0_5)
+    val thickness = dimensionResource(id = R.dimen.divider_line_thickness)
 
     Divider(
         color = Color.LightGray,
-        thickness = value05dp,
+        thickness = thickness,
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -204,17 +163,15 @@ private fun divider() {
 @Composable
 private fun BottomText() {
 
-    val value10dp = dimensionResource(id = R.dimen.dp_10)
-    val value60dp = dimensionResource(id = R.dimen.dp_60)
+    val bottomHeight = dimensionResource(id = R.dimen.bottom_height)
 
     Box(
-        modifier = Modifier.fillMaxSize(), Alignment.BottomStart
+        modifier = Modifier.fillMaxWidth().height(bottomHeight).background(Color.LightGray),
+        contentAlignment = Alignment.Center
     ) {
         Text(
-            "到底了",
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(top = value10dp).height(value60dp)
-                .background(Color.LightGray)
+            stringResource(R.string.bottom_text),
+            fontSize = dimensionResource(R.dimen.font_size_medium).value.sp
         )
     }
 }

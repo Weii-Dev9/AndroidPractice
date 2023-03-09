@@ -37,4 +37,6 @@
     <string name="welcome_back">欢迎您回来</string>
     <string name="tip">提示信息：\n点击"知道了"不再提示。"</string>
     <string name="compose_tweets">compose_tweets</string>
+    <string name="avatar">avatar</string>
+    <string name="BigAvatar">BigAvatar</string>
 </resources>
