@@ -18,7 +18,9 @@ class DataSourceImpl constructor(context: Context) : DataSource {
         }
         return withContext(Dispatchers.IO) {
             localStorage.updateTweets(filteredTweets)
-            localStorage.getTweets()
+            localStorage.getTweets().filter { tweet ->
+                tweet.content.isNotBlank()
+            }
         }
     }
 }
