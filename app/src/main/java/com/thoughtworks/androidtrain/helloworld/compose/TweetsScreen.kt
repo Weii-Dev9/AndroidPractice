@@ -20,16 +20,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import coil.compose.rememberAsyncImagePainter
+import com.thoughtworks.androidtrain.helloworld.R
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 
 @Composable
@@ -57,13 +58,9 @@ fun TweetsScreen() {
             //顶部 item{}
             //内容
             items(tweets) { tweet ->
-                if (tweet.content != "" && tweet != tweets.last()) {
-                    TweetItem(tweet)
-                    Divider(
-                        color = Color.LightGray,
-                        thickness = 0.5.dp,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                TweetItem(tweet)
+                if (tweet != tweets.last()) {
+                    divider()
                 }
             }
             //底部
@@ -76,14 +73,18 @@ fun TweetsScreen() {
 
 @Composable
 private fun TweetItem(tweet: Tweet) {
-    Row(modifier = Modifier.padding(16.dp)) {
+
+    val value16dp = dimensionResource(id = R.dimen.dp_16)
+    val value8dp = dimensionResource(id = R.dimen.dp_8)
+    val nickColor = colorResource(id = R.color.light_blue)
+
+    Row(modifier = Modifier.padding(value16dp)) {
         val painter = rememberAsyncImagePainter(tweet.sender?.avatar)
         Avatar(painter)
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(value16dp))
 
         Column(horizontalAlignment = Alignment.Start) {
-            val nickColor = Color(0xFF4e7fe4)
             tweet.sender?.nick?.let {
                 Text(
                     text = it,
@@ -92,14 +93,14 @@ private fun TweetItem(tweet: Tweet) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(value8dp))
 
             Text(
                 text = tweet.content,
                 style = MaterialTheme.typography.body1,
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(value16dp))
 
         }
     }
@@ -107,11 +108,14 @@ private fun TweetItem(tweet: Tweet) {
 
 @Composable
 private fun Avatar(painter: Painter) {
+
     val showDialog = remember { mutableStateOf(false) }
+    val value60dp = dimensionResource(id = R.dimen.dp_60)
+
     Image(
         painter = painter,
         contentDescription = "avatar",
-        modifier = Modifier.size(60.dp).clip(CircleShape).clickable { showDialog.value = true },
+        modifier = Modifier.size(value60dp).clip(CircleShape).clickable { showDialog.value = true },
         contentScale = ContentScale.Crop
     )
     if (showDialog.value) {
@@ -123,17 +127,22 @@ private fun Avatar(painter: Painter) {
 
 @Composable
 private fun BigAvatar(painter: Painter, onDismiss: () -> Unit) {
+
+    val value300dp = dimensionResource(id = R.dimen.dp_300)
+    val value20dp = dimensionResource(id = R.dimen.dp_20)
+    val value200dp = dimensionResource(id = R.dimen.dp_200)
+
     Dialog(onDismissRequest = onDismiss) {
         Box(
             Modifier.fillMaxWidth()
-                .height(300.dp)
-                .padding(20.dp)
+                .height(value300dp)
+                .padding(value20dp)
                 .background(Color.White)
         ) {
             Image(
                 painter = painter,
                 contentDescription = "BigAvatar",
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.size(value200dp)
                     .clip(CircleShape)
                     .align(Alignment.Center),
                 contentScale = ContentScale.Crop
@@ -180,21 +189,31 @@ private fun Comment() {
 
 }
 
-@Preview
 @Composable
-private fun PreviewTest() {
-    TweetsScreen()
+private fun divider() {
+
+    val value05dp = dimensionResource(id = R.dimen.dp_0_5)
+
+    Divider(
+        color = Color.LightGray,
+        thickness = value05dp,
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Composable
 private fun BottomText() {
+
+    val value10dp = dimensionResource(id = R.dimen.dp_10)
+    val value60dp = dimensionResource(id = R.dimen.dp_60)
+
     Box(
         modifier = Modifier.fillMaxSize(), Alignment.BottomStart
     ) {
         Text(
             "到底了",
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(top = 10.dp).height(60.dp)
+            modifier = Modifier.fillMaxWidth().padding(top = value10dp).height(value60dp)
                 .background(Color.LightGray)
         )
     }
