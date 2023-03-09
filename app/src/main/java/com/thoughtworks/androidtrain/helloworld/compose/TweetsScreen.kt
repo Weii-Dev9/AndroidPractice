@@ -2,15 +2,13 @@ package com.thoughtworks.androidtrain.helloworld.compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -23,16 +21,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import coil.compose.rememberAsyncImagePainter
+import com.thoughtworks.androidtrain.helloworld.R
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 
 @Composable
@@ -57,12 +59,14 @@ fun TweetsScreen() {
 
     tweets?.let {
         LazyColumn {
-            //顶部 item{}
-            //内容
-            items(it) { tweet ->
+
+            items(tweets) { tweet ->
                 TweetItem(tweet)
+                if (tweet != tweets.last()) {
+                    divider()
+                }
             }
-            //底部
+
             item {
                 BottomText()
             }
@@ -72,46 +76,48 @@ fun TweetsScreen() {
 
 @Composable
 private fun TweetItem(tweet: Tweet) {
-    val flag = remember { mutableStateOf(false) }
-    Row(modifier = Modifier.padding(all = 8.dp)) {
+
+    val rowPadding = dimensionResource(id = R.dimen.tweet_item_row_padding)
+    val spacerWidth = dimensionResource(id = R.dimen.spacer_width_between_avatar_content)
+    val spacerHeight = dimensionResource(id = R.dimen.spacer_height_between_nick_content)
+    val nickColor = colorResource(id = R.color.light_blue)
+
+    Row(modifier = Modifier.padding(rowPadding)) {
         val painter = rememberAsyncImagePainter(tweet.sender?.avatar)
-        //val painter = painterResource(R.mipmap.avatar)
         Avatar(painter)
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(spacerWidth))
 
-        Column {
+        Column(horizontalAlignment = Alignment.Start) {
             tweet.sender?.nick?.let {
                 Text(
                     text = it,
-                    color = MaterialTheme.colors.secondaryVariant,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = nickColor
                 )
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(spacerHeight))
 
-            Box(Modifier.fillMaxWidth().clickable(onClick = {
-                flag.value = true
-            })) {
-                Text(
-                    text = tweet.content, style = MaterialTheme.typography.body2,
-                )
-            }
-            if (flag.value) {
-                Comment()
-            }
+            Text(
+                text = tweet.content,
+                style = MaterialTheme.typography.body1,
+            )
         }
     }
 }
 
 @Composable
 private fun Avatar(painter: Painter) {
+
     val showDialog = remember { mutableStateOf(false) }
+    val avatarSize = dimensionResource(id = R.dimen.avatar_size)
+
     Image(
         painter = painter,
-        contentDescription = "avatar",
-        modifier = Modifier.size(60.dp).clip(CircleShape).clickable { showDialog.value = true },
+        contentDescription = stringResource(R.string.avatar),
+        modifier = Modifier.size(avatarSize).clip(CircleShape)
+            .clickable { showDialog.value = true },
         contentScale = ContentScale.Crop
     )
     if (showDialog.value) {
@@ -123,17 +129,17 @@ private fun Avatar(painter: Painter) {
 
 @Composable
 private fun BigAvatar(painter: Painter, onDismiss: () -> Unit) {
+
+    val bigAvatarSize = dimensionResource(id = R.dimen.big_avatar_size)
+
     Dialog(onDismissRequest = onDismiss) {
         Box(
             Modifier.fillMaxWidth()
-                .height(300.dp)
-                .padding(20.dp)
-                .background(Color.White)
         ) {
             Image(
                 painter = painter,
-                contentDescription = "BigAvatar",
-                modifier = Modifier.size(200.dp)
+                contentDescription = stringResource(R.string.BigAvatar),
+                modifier = Modifier.size(bigAvatarSize)
                     .clip(CircleShape)
                     .align(Alignment.Center),
                 contentScale = ContentScale.Crop
@@ -143,59 +149,29 @@ private fun BigAvatar(painter: Painter, onDismiss: () -> Unit) {
 }
 
 @Composable
-private fun Comment() {
-    val textValue = remember { mutableStateOf("") }
-    val input = remember { mutableStateOf(true) }
+private fun divider() {
 
-    Row {
-        Box(
-            Modifier.weight(1f)
-        ) {
-            TextField(value = textValue.value, onValueChange = {
-                textValue.value = it
-            }, enabled = input.value)
-        }
-        Box(
-            Modifier.weight(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            Button(onClick = { input.value = false }) {
-                Text(text = "save")
-            }
-        }
-        Box(
-            Modifier.weight(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            Button(onClick = {
-                textValue.value = ""
-                input.value = true
-            }) {
-                Text(text = "cancel")
-            }
-        }
+    val thickness = dimensionResource(id = R.dimen.divider_line_thickness)
 
-
-    }
-
-}
-
-@Preview
-@Composable
-private fun PreviewTest() {
-    TweetsScreen()
+    Divider(
+        color = Color.LightGray,
+        thickness = thickness,
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Composable
 private fun BottomText() {
+
+    val bottomHeight = dimensionResource(id = R.dimen.bottom_height)
+
     Box(
-        modifier = Modifier.fillMaxSize(), Alignment.BottomStart
+        modifier = Modifier.fillMaxWidth().height(bottomHeight).background(Color.LightGray),
+        contentAlignment = Alignment.Center
     ) {
         Text(
-            "到底了",
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(top = 10.dp).height(60.dp)
-                .background(Color.LightGray)
+            stringResource(R.string.bottom_text),
+            fontSize = dimensionResource(R.dimen.font_size_medium).value.sp
         )
     }
 }
