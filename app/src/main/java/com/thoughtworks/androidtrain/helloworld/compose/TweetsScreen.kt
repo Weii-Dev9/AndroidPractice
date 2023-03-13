@@ -223,7 +223,7 @@ private fun HeaderBackground() {
     ) {
         Image(
             painter = painterResource(id = R.mipmap.background),
-            contentDescription = stringResource(R.string.personal_nick),
+            contentDescription = stringResource(R.string.background),
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .fillMaxSize()
