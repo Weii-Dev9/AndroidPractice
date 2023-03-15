@@ -14,5 +14,16 @@
 
     <dimen name="font_size_medium">16sp</dimen>
 
+    <dimen name="topAppBar_elevation">0dp</dimen>
+
+    <dimen name="action_icon_size">50dp</dimen>
+    <dimen name="action_icon_padding_top">15dp</dimen>
+
+    <dimen name="header_background_height">200dp</dimen>
+    <dimen name="personal_nick_size">22sp</dimen>
+    <dimen name="personal_nick_padding_end">80dp</dimen>
+    <dimen name="personal_avatar">80dp</dimen>
+    <dimen name="personal_avatar_padding">8dp</dimen>
+    <dimen name="personal_avatar_offset_y">30dp</dimen>
 
 </resources>

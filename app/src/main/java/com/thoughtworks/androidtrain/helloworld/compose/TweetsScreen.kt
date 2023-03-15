@@ -2,13 +2,15 @@ package com.thoughtworks.androidtrain.helloworld.compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -16,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -23,9 +26,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -39,6 +42,7 @@ import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 
 @Composable
 fun TweetsScreen() {
+
     val tweetsViewModel: ComposeViewModel = hiltViewModel()
     val lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 
@@ -59,19 +63,17 @@ fun TweetsScreen() {
 
     tweets?.let {
         LazyColumn {
+            item { Header() }
 
             items(tweets) { tweet ->
                 TweetItem(tweet)
-                if (tweet != tweets.last()) {
-                    divider()
-                }
+                divider()
             }
 
-            item {
-                BottomText()
-            }
+            item { BottomText() }
         }
     }
+
 }
 
 @Composable
@@ -150,14 +152,100 @@ private fun BigAvatar(painter: Painter, onDismiss: () -> Unit) {
 
 @Composable
 private fun divider() {
-
-    val thickness = dimensionResource(id = R.dimen.divider_line_thickness)
-
     Divider(
         color = Color.LightGray,
-        thickness = thickness,
         modifier = Modifier.fillMaxWidth()
     )
+}
+
+@Composable
+private fun Header() {
+
+    Box {
+        HeaderBackground()
+        TopAppBar()
+    }
+
+}
+
+@Composable
+private fun TopAppBar() {
+
+    val elevation = dimensionResource(id = R.dimen.topAppBar_elevation)
+    val actionIconSize = dimensionResource(id = R.dimen.action_icon_size)
+    val actionIconPaddingTop = dimensionResource(id = R.dimen.action_icon_padding_top)
+
+    TopAppBar(
+        title = {},
+        backgroundColor = Color.Transparent,
+        elevation = elevation,
+        navigationIcon = {
+            IconButton(onClick = { /*返回*/ }) {
+                Icon(
+                    Icons.Default.ArrowBack,
+                    modifier = Modifier.size(actionIconSize)
+                        .padding(top = actionIconPaddingTop),
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = { /*发表朋友圈*/ }) {
+                Icon(
+                    painter = painterResource(id = R.mipmap.camera),
+                    modifier = Modifier.size(actionIconSize)
+                        .padding(top = actionIconPaddingTop),
+                    contentDescription = stringResource(R.string.public_friends_circle)
+                )
+            }
+        }
+    )
+}
+
+@Composable
+private fun HeaderBackground() {
+
+    val backgroundHeight = dimensionResource(id = R.dimen.header_background_height)
+    val personalNicknameSize = dimensionResource(id = R.dimen.personal_nick_size)
+    val personalNicknamePaddingEnd = dimensionResource(id = R.dimen.personal_nick_padding_end)
+    val personalAvatarSize = dimensionResource(id = R.dimen.personal_avatar)
+    val personalAvatarPadding = dimensionResource(id = R.dimen.personal_avatar_padding)
+    val personalAvatarOffSetY = dimensionResource(id = R.dimen.personal_avatar_offset_y)
+
+    Box(
+        modifier = Modifier
+            .height(backgroundHeight)
+            .fillMaxWidth()
+    ) {
+        Image(
+            painter = painterResource(id = R.mipmap.background),
+            contentDescription = stringResource(R.string.background),
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .fillMaxSize()
+        )
+        Text(
+            text = stringResource(R.string.personal_nick),
+            fontSize = personalNicknameSize.value.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = personalNicknamePaddingEnd)
+        )
+        Image(
+            painter = painterResource(id = R.mipmap.personal),
+            contentDescription = stringResource(R.string.avatar),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(personalAvatarSize)
+                .padding(personalAvatarPadding)
+                .align(Alignment.BottomEnd)
+                .offset(y = personalAvatarOffSetY)
+                .clip(CircleShape)
+        )
+    }
+
 }
 
 @Composable

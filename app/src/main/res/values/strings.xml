@@ -39,4 +39,9 @@
     <string name="compose_tweets">compose_tweets</string>
     <string name="avatar">avatar</string>
     <string name="BigAvatar">BigAvatar</string>
+    <string name="back">返回</string>
+    <string name="public_friends_circle">发表朋友圈</string>
+    <string name="Header_Background">Header Background</string>
+    <string name="personal_nick">Weii</string>
+    <string name="background">朋友圈背景</string>
 </resources>
