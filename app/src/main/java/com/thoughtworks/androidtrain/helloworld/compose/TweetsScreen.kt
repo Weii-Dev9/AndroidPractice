@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -27,6 +29,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -60,14 +63,11 @@ fun TweetsScreen() {
 
     tweets?.let {
         LazyColumn {
-
             item { Header() }
 
             items(tweets) { tweet ->
                 TweetItem(tweet)
-                if (tweet != tweets.last()) {
-                    divider()
-                }
+                divider()
             }
 
             item { BottomText() }
@@ -152,12 +152,8 @@ private fun BigAvatar(painter: Painter, onDismiss: () -> Unit) {
 
 @Composable
 private fun divider() {
-
-    val thickness = dimensionResource(id = R.dimen.divider_line_thickness)
-
     Divider(
         color = Color.LightGray,
-        thickness = thickness,
         modifier = Modifier.fillMaxWidth()
     )
 }

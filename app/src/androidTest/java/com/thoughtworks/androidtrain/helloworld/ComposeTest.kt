@@ -26,6 +26,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+private const val background = "背景图片"
+private const val personalNick = "Weii"
+private const val avatar = "avatar"
+private const val back = "返回"
+private const val publicTweet = "发表朋友圈"
+
 @RunWith(AndroidJUnit4::class)
 class ComposeTest {
 
@@ -37,25 +43,25 @@ class ComposeTest {
         composeTestRule.setContent {
             Image(
                 painter = painterResource(id = R.mipmap.background),
-                contentDescription = "背景图片",
+                contentDescription = background,
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .fillMaxSize()
             )
             Text(
-                text = "Weii",
+                text = personalNick,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
             )
             Image(
                 painter = painterResource(id = R.mipmap.personal),
-                contentDescription = "avatar",
+                contentDescription = avatar,
                 contentScale = ContentScale.Crop,
             )
         }
-        composeTestRule.onNodeWithContentDescription("背景图片").assertIsDisplayed()
-        composeTestRule.onNodeWithContentDescription("avatar").assertIsDisplayed()
-        composeTestRule.onNode(hasText("Weii")).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(background).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(avatar).assertIsDisplayed()
+        composeTestRule.onNode(hasText(personalNick)).assertIsDisplayed()
     }
 
     @Test
@@ -66,27 +72,27 @@ class ComposeTest {
                 backgroundColor = Color.Transparent,
                 elevation = 0.dp,
                 navigationIcon = {
-                    IconButton(onClick = { /*返回*/ }) {
+                    IconButton(onClick = { /*TODO:返回*/ }) {
                         Icon(
                             Icons.Default.ArrowBack,
-                            contentDescription = "返回"
+                            contentDescription = back
                         )
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /*发表朋友圈*/ }) {
+                    IconButton(onClick = { /*TODO:发表朋友圈*/ }) {
                         Icon(
                             painter = painterResource(id = R.mipmap.camera),
-                            contentDescription = "发表朋友圈"
+                            contentDescription = publicTweet
                         )
                     }
                 }
             )
         }
-        composeTestRule.onNodeWithContentDescription("返回").assertIsDisplayed()
-        composeTestRule.onNodeWithContentDescription("返回").performClick()
-        composeTestRule.onNodeWithContentDescription("发表朋友圈").assertIsDisplayed()
-        composeTestRule.onNodeWithContentDescription("发表朋友圈").performClick()
+        composeTestRule.onNodeWithContentDescription(back).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(back).performClick()
+        composeTestRule.onNodeWithContentDescription(publicTweet).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(publicTweet).performClick()
     }
 
 }
