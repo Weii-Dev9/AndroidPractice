@@ -19,9 +19,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,10 +31,11 @@ private const val back = "返回"
 private const val publicTweet = "发表朋友圈"
 
 @RunWith(AndroidJUnit4::class)
-class ComposeTest {
+class TweetsScreenHeaderTest {
+
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    var composeTestRule = createComposeRule()
 
     @Test
     fun profileTest() {
