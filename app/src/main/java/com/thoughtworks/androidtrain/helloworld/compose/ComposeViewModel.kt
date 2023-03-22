@@ -23,8 +23,7 @@ class ComposeViewModel @Inject constructor(
 
     fun fetchTweets() {
         viewModelScope.launch {
-            val ts = dataSource.fetchTweets()
-            tweetList.postValue(ts)
+            tweetList.postValue(dataSource.fetchTweets())
         }
     }
 }
