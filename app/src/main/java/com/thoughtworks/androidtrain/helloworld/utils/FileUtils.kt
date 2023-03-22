@@ -12,7 +12,7 @@ class FileUtils {
             val str: InputStream = context.resources.openRawResource(rawId)
             val reader = BufferedReader(InputStreamReader(str))
             var jsonStr: String? = ""
-            var line: String? = ""
+            var line: String?
             try {
                 while (reader.readLine().also { line = it } != null) {
                     jsonStr += line
