@@ -26,4 +26,6 @@
     <dimen name="personal_avatar_padding">8dp</dimen>
     <dimen name="personal_avatar_offset_y">30dp</dimen>
 
+    <dimen name="outlined_text_field_padding">8dp</dimen>
+
 </resources>

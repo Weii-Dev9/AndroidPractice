@@ -20,7 +20,7 @@ fun NavGraph(
             TweetsScreen(navHostController, tweetsViewModel)
         }
         composable(route = Screen.NewTweetScreen.route) {
-            NewTweetScreen(navHostController)
+            NewTweetScreen(navHostController, tweetsViewModel)
         }
     }
 }

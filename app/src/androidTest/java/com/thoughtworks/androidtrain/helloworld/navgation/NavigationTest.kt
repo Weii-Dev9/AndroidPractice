@@ -1,4 +1,4 @@
-package com.thoughtworks.androidtrain.helloworld
+package com.thoughtworks.androidtrain.helloworld.navgation
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.*

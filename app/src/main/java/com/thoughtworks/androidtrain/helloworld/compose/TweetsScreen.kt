@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -60,17 +59,17 @@ fun TweetsScreen(
         }
     }
 
-    val tweets = tweetsViewModel.tweets.observeAsState().value
+    val tweets = tweetsViewModel.tweets.value.reversed()
 
-    tweets?.let {
-        LazyColumn {
-            item { Header(navController) }
+    LazyColumn {
+        item { Header(navController) }
 
-            items(tweets) { tweet ->
-                TweetItem(tweet)
-                divider()
-            }
+        items(tweets) { tweet ->
+            TweetItem(tweet)
+            divider()
+        }
 
+        if (tweets.isNotEmpty() && tweets.size > 5) {
             item { BottomText() }
         }
     }
@@ -86,7 +85,11 @@ private fun TweetItem(tweet: Tweet) {
     val nickColor = colorResource(id = R.color.light_blue)
 
     Row(modifier = Modifier.padding(rowPadding)) {
-        val painter = rememberAsyncImagePainter(tweet.sender?.avatar)
+        val painter: Painter = if (tweet.sender?.avatar == stringResource(R.string.own_avatar)) {
+            painterResource(id = R.mipmap.personal)
+        } else {
+            rememberAsyncImagePainter(tweet.sender?.avatar)
+        }
         Avatar(painter)
 
         Spacer(modifier = Modifier.width(spacerWidth))

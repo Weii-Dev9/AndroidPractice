@@ -7,12 +7,16 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.ImageEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ImageDao {
     @Query("SELECT * FROM image")
-    fun getAll(): List<ImageEntity>
+    fun getAll(): Flow<List<ImageEntity>>
+
+    @Query("SELECT * FROM image WHERE id = :id")
+    suspend fun getByTweetId(id: Long): List<ImageEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(imageEntity: ImageEntity?): Long?
+    suspend fun insert(imageEntity: ImageEntity)
 }

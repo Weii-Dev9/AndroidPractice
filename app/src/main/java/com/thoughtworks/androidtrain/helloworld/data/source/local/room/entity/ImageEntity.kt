@@ -15,13 +15,13 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE
     )]
 )
-class ImageEntity {
+data class ImageEntity(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
+    var id: Long = 0,
 
     @ColumnInfo(name = "tweet_id", index = true)
-    var tweetId: Long = 0
+    var tweetId: Long = 0,
 
     @ColumnInfo(name = "url")
     var url: String? = null
-}
+)

@@ -1,26 +1,30 @@
 package com.thoughtworks.androidtrain.helloworld.data.source
 
 import android.content.Context
+import com.thoughtworks.androidtrain.helloworld.data.model.Sender
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 import com.thoughtworks.androidtrain.helloworld.data.source.local.LocalStorageImpl
-import com.thoughtworks.androidtrain.helloworld.data.source.remote.RemoteDataImpl
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 
 class DataSourceImpl constructor(context: Context) : DataSource {
     private val localStorage = LocalStorageImpl(context)
-    private val remoteData = RemoteDataImpl()
 
-    override suspend fun fetchTweets(): List<Tweet> {
-        val filteredTweets = remoteData.fetchTweets().filter { tweet ->
-            tweet.error == null && tweet.unknownError == null
-        }
-        return withContext(Dispatchers.IO) {
-            localStorage.updateTweets(filteredTweets)
-            localStorage.getTweets().filter { tweet ->
+    override fun fetchTweets(): Flow<List<Tweet>> {
+        return localStorage.getTweets().map { tweets ->
+            tweets.filter { tweet ->
                 tweet.content.isNotBlank()
             }
+        }
+    }
+
+    override suspend fun insertTweet(tweet: Tweet) {
+        withContext(Dispatchers.IO) {
+            tweet.sender = Sender(nick = "Weii", username = "Weii", avatar = "own pic")
+            localStorage.insertTweet(tweet)
         }
     }
 }

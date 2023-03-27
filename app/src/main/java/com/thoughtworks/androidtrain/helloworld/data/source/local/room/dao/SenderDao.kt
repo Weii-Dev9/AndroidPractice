@@ -11,8 +11,11 @@ import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.Se
 @Dao
 interface SenderDao {
     @Query("SELECT * FROM sender")
-    fun getAll(): List<SenderEntity>
+    suspend fun getAll(): List<SenderEntity>
+
+    @Query("SELECT * FROM sender WHERE id = :id")
+    suspend fun getById(id: Long): SenderEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(senderEntity: SenderEntity): Long
+    suspend fun insert(senderEntity: SenderEntity): Long
 }

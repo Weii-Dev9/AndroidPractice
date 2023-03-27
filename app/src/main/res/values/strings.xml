@@ -44,4 +44,13 @@
     <string name="Header_Background">Header Background</string>
     <string name="personal_nick">Weii</string>
     <string name="background">朋友圈背景</string>
+    <string name="own_avatar">own pic</string>
+    <string name="NowThinking">这一刻的想法...</string>
+    <string name="LightGrayWhite">#F4F4F4</string>
+    <string name="public_words">发表文字</string>
+    <string name="pblic">发表</string>
+    <string name="exit_editor">确定要退出编辑吗？</string>
+    <string name="exit_and_no_reserve">退出后草稿不会被保存</string>
+    <string name="exit">退出</string>
+    <string name="cancel">取消</string>
 </resources>
