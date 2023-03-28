@@ -38,7 +38,7 @@ class TweetsScreenHeaderTest {
     var composeTestRule = createComposeRule()
 
     @Test
-    fun profileTest() {
+    fun testProfile() {
         composeTestRule.setContent {
             Image(
                 painter = painterResource(id = R.mipmap.background),
@@ -64,7 +64,7 @@ class TweetsScreenHeaderTest {
     }
 
     @Test
-    fun topBarTest() {
+    fun testTopBar() {
         composeTestRule.setContent {
             TopAppBar(
                 title = {},

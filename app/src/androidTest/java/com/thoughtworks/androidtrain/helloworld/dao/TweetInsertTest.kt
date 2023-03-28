@@ -51,7 +51,7 @@ class ExampleInstrumentedTest {
     }
 
     @Test
-    fun insertSenderEntity_test() = runTest {
+    fun testInsertSenderEntity() = runTest {
         val senderEntity = SenderEntity()
         senderEntity.id = 1
         senderEntity.nick = "Weii"
@@ -64,7 +64,7 @@ class ExampleInstrumentedTest {
     }
 
     @Test
-    fun insertTweetEntity_test() = runTest {
+    fun testInsertTweetEntity() = runTest {
         val senderEntity = SenderEntity(1L, "Weii", "Weii", "own_pic")
         senderDao.insert(senderEntity)
 
@@ -77,7 +77,7 @@ class ExampleInstrumentedTest {
     }
 
     @Test
-    fun insertImageEntity_test() = runTest {
+    fun testInsertImageEntity() = runTest {
         val senderEntity = SenderEntity(1L, "Weii", "Weii", "own_pic")
         senderDao.insert(senderEntity)
 
@@ -91,7 +91,7 @@ class ExampleInstrumentedTest {
     }
 
     @Test
-    fun insertCommentEntity_test() = runTest {
+    fun testInsertCommentEntity() = runTest {
         val senderEntity = SenderEntity(1L, "Weii", "Weii", "own_pic")
         senderDao.insert(senderEntity)
 

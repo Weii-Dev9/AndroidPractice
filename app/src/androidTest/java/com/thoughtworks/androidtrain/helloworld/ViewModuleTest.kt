@@ -27,7 +27,7 @@ class ViewModuleTest {
     }
 
     @Test
-    fun insert_one_tweet() = runBlockingTest {
+    fun testInsertOneTweet() = runBlockingTest {
         val tweet = Tweet("Jack", null, emptyList(), emptyList(), null, null)
         viewModel.insertData(tweet)
         viewModel.fetchTweets()
