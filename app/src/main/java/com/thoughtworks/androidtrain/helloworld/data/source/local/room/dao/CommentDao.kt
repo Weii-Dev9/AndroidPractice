@@ -7,13 +7,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.CommentEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CommentDao {
     @Query("SELECT * FROM comment")
-    fun getAll(): List<CommentEntity>
+    fun getAll(): Flow<List<CommentEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(commentEntity: CommentEntity?): Long?
-
+    suspend fun insert(commentEntity: CommentEntity)
 }

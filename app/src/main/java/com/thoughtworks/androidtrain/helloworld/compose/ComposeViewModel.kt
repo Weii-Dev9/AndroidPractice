@@ -1,8 +1,8 @@
 package com.thoughtworks.androidtrain.helloworld.compose
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
@@ -17,13 +17,23 @@ class ComposeViewModel @Inject constructor(
     private val dataSource: DataSource,
 ) : ViewModel() {
 
-    private val tweetList: MutableLiveData<List<Tweet>> = MutableLiveData(listOf())
+    private val _tweetState = mutableStateOf(Tweet())
+    val tweet: State<Tweet> = _tweetState
 
-    val tweets: LiveData<List<Tweet>> = tweetList
+    private var _tweetsState = mutableStateOf<List<Tweet>>(emptyList())
+    val tweets: State<List<Tweet>> = _tweetsState
+
+    fun insertData(tweet: Tweet) {
+        viewModelScope.launch {
+            dataSource.insertTweet(tweet)
+        }
+    }
 
     fun fetchTweets() {
         viewModelScope.launch {
-            tweetList.postValue(dataSource.fetchTweets())
+            dataSource.fetchTweets().collect { tweet ->
+                _tweetsState.value = tweet
+            }
         }
     }
 }

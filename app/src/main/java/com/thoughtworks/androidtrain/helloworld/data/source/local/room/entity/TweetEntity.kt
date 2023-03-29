@@ -18,13 +18,13 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE
     )]
 )
-class TweetEntity {
+data class TweetEntity(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
+    var id: Long = 0,
 
     @ColumnInfo(name = "sender_id", index = true)
-    var senderId: Long = 0
+    var senderId: Long = 0,
 
     @ColumnInfo(name = "content")
     var content: String? = null
-}
+)

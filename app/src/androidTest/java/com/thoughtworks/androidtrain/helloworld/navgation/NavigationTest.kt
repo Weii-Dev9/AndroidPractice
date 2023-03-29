@@ -1,4 +1,4 @@
-package com.thoughtworks.androidtrain.helloworld
+package com.thoughtworks.androidtrain.helloworld.navgation
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.*
@@ -45,14 +45,14 @@ class NavigationTest {
     }
 
     @Test
-    fun navHost_verifyStartDestination() {
+    fun testNavHostVerifyStartDestination() {
         composeTestRule
             .onNodeWithContentDescription(avatar)
             .assertIsDisplayed()
     }
 
     @Test
-    fun navHost_clickPublicTweet_navigateToNewTweet() {
+    fun testNavHostClickPublicTweetNavigateToNewTweet() {
         composeTestRule.onNodeWithContentDescription(publicTweet)
             .performScrollTo()
             .performClick()

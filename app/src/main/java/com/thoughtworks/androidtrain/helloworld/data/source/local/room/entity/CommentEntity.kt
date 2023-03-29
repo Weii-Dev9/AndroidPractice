@@ -20,16 +20,16 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE
     )]
 )
-class CommentEntity {
+data class CommentEntity(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
+    var id: Long = 0,
 
     @ColumnInfo(name = "tweet_id", index = true)
-    var tweetId: Long = 0
+    var tweetId: Long = 0,
 
     @ColumnInfo(name = "sender_id", index = true)
-    var senderId: Long = 0
+    var senderId: Long = 0,
 
     @ColumnInfo(name = "content")
     var content: String? = null
-}
+)
