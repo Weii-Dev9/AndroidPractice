@@ -39,6 +39,8 @@ import com.thoughtworks.androidtrain.helloworld.R
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 import com.thoughtworks.androidtrain.helloworld.navigation.Screen
 import com.thoughtworks.androidtrain.helloworld.utils.SoftKeyBoardListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLayoutApi::class)
 @ExperimentalComposeUiApi
@@ -73,12 +75,11 @@ fun TweetsScreen(
         }
 
         override fun keyBoardHide(height: Int) {
-            keyBoardHeight = height
+            keyBoardHeight = 0
         }
     })
 
-
-    Column(Modifier.statusBarsPadding().navigationBarsPadding()) {
+    Column(Modifier.statusBarsPadding().navigationBarsPadding().imeNestedScroll()) {
         LazyColumn(
             Modifier.weight(1f).imeNestedScroll(),
             state = lazyListState,
@@ -87,14 +88,19 @@ fun TweetsScreen(
 
             itemsIndexed(tweets) { index, tweet ->
                 selectedItemIndex = index
-                TweetItem(tweet, selectedItemIndex, lazyListState)
+                TweetItem(
+                    tweet,
+                    lazyListState,
+                    selectedItemIndex
+                )
                 if (tweets.lastIndex != index) {
                     divider()
                 }
             }
-
             item {
-                Space(keyBoardHeight)
+                if (keyBoardHeight != 0) {
+                    Space(keyBoardHeight)
+                }
                 BottomDivider()
             }
         }
@@ -108,12 +114,17 @@ private fun Space(keyBoardHeight: Int) {
 }
 
 @Composable
-private fun TweetItem(tweet: Tweet, selectedItemIndex: Int, lazyListState: LazyListState) {
+private fun TweetItem(
+    tweet: Tweet,
+    lazyListState: LazyListState,
+    selectedItemIndex: Int,
+) {
 
     val rowPadding = dimensionResource(id = R.dimen.tweet_item_row_padding)
     val spacerWidth = dimensionResource(id = R.dimen.spacer_width_between_avatar_content)
     val spacerHeight = dimensionResource(id = R.dimen.spacer_height_between_nick_content)
     val nickColor = colorResource(id = R.color.light_blue)
+    val coroutineScope = rememberCoroutineScope()
 
     Row(
         modifier = Modifier.padding(rowPadding)
@@ -148,7 +159,12 @@ private fun TweetItem(tweet: Tweet, selectedItemIndex: Int, lazyListState: LazyL
                 Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.BottomEnd
             ) {
-                LikeAndComment(selectedItemIndex, lazyListState)
+                LikeAndComment(onClickAction = {
+                    coroutineScope.launch {
+                        delay(500)
+                        lazyListState.scrollToItem(selectedItemIndex + 1)
+                    }
+                })
             }
         }
     }

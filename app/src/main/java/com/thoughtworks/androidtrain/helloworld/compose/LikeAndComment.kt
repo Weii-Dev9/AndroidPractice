@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -25,12 +24,13 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.thoughtworks.androidtrain.helloworld.R
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LikeAndComment(selectedItemIndex: Int, lazyListState: LazyListState) {
+fun LikeAndComment(
+    onClickAction: () -> Unit,
+) {
 
     var expanded by remember { mutableStateOf(false) }
     var isLiked by remember { mutableStateOf(false) }
@@ -38,8 +38,6 @@ fun LikeAndComment(selectedItemIndex: Int, lazyListState: LazyListState) {
     var comment by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-
-    val coroutineScope = rememberCoroutineScope()
 
 
     IconButton(
@@ -68,14 +66,9 @@ fun LikeAndComment(selectedItemIndex: Int, lazyListState: LazyListState) {
                     )
                 )
             }
-
             DropdownMenuItem(onClick = {
                 isDialogShown = true
-                coroutineScope.launch {
-                    lazyListState.scrollToItem(
-                        index = selectedItemIndex + 1,
-                    )
-                }
+                onClickAction()
             }) {
                 Icon(
                     Icons.Default.ChatBubbleOutline,
