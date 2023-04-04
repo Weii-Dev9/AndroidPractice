@@ -16,10 +16,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.thoughtworks.androidtrain.helloworld.R
@@ -42,7 +42,7 @@ fun LikeAndComment(
 
     IconButton(
         onClick = { expanded = true },
-        modifier = Modifier.size(24.dp)
+        modifier = Modifier.size(dimensionResource(R.dimen.like_commend_icon_size))
     ) {
         Icon(
             Icons.Default.MoreHoriz,
@@ -59,7 +59,7 @@ fun LikeAndComment(
                     contentDescription = stringResource(R.string.like),
                     tint = if (isLiked) Color.Red else Color.Unspecified
                 )
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.like_commend_dropdownMenu_spacer_width)))
                 Text(
                     text = if (isLiked) stringResource(R.string.cancel) else stringResource(
                         R.string.like_zh
@@ -74,7 +74,7 @@ fun LikeAndComment(
                     Icons.Default.ChatBubbleOutline,
                     contentDescription = stringResource(R.string.like)
                 )
-                Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.like_commend_dropdownMenu_spacer_width)))
                 Text(text = stringResource(R.string.comment))
             }
 
@@ -84,7 +84,7 @@ fun LikeAndComment(
     if (isDialogShown) {
         expanded = false
         LaunchedEffect(Unit) {
-            delay(200)
+            delay(100)
             focusRequester.requestFocus()
             keyboardController?.show()
         }

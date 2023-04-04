@@ -2,10 +2,8 @@ package com.thoughtworks.androidtrain.helloworld.compose
 
 import android.app.Activity
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -18,25 +16,20 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.*
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
 import com.thoughtworks.androidtrain.helloworld.R
-import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 import com.thoughtworks.androidtrain.helloworld.navigation.Screen
 import com.thoughtworks.androidtrain.helloworld.utils.SoftKeyBoardListener
 import kotlinx.coroutines.delay
@@ -79,6 +72,26 @@ fun TweetsScreen(
         }
     })
 
+    val coroutineScope = rememberCoroutineScope()
+    var itemHeight by remember { mutableStateOf(0) }
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val paddingValues =
+        dimensionResource(id = R.dimen.tweet_item_row_padding).value * 2 + dimensionResource(R.dimen.bottom_divider_bottom_padding).value
+    val screenInt =
+        ((screenHeight.value - paddingValues) * LocalDensity.current.density + 0.5f).toInt()
+    LaunchedEffect(keyBoardHeight) {
+        if (keyBoardHeight != 0) {
+            coroutineScope.launch {
+                delay(20)
+                lazyListState.scrollToItem(
+                    selectedItemIndex + 1,
+                    -(screenInt - keyBoardHeight - itemHeight)
+                )
+            }
+        }
+    }
+
     Column(Modifier.statusBarsPadding().navigationBarsPadding().imeNestedScroll()) {
         LazyColumn(
             Modifier.weight(1f).imeNestedScroll(),
@@ -87,12 +100,11 @@ fun TweetsScreen(
             item { Header(navController) }
 
             itemsIndexed(tweets) { index, tweet ->
-                selectedItemIndex = index
-                TweetItem(
-                    tweet,
-                    lazyListState,
-                    selectedItemIndex
-                )
+                TweetItem(tweet, index) { selectedIndex, rowHeight ->
+                    selectedItemIndex = selectedIndex
+                    itemHeight = rowHeight
+
+                }
                 if (tweets.lastIndex != index) {
                     divider()
                 }
@@ -113,103 +125,6 @@ private fun Space(keyBoardHeight: Int) {
     Spacer(Modifier.height(with(density) { keyBoardHeight.toDp() }))
 }
 
-@Composable
-private fun TweetItem(
-    tweet: Tweet,
-    lazyListState: LazyListState,
-    selectedItemIndex: Int,
-) {
-
-    val rowPadding = dimensionResource(id = R.dimen.tweet_item_row_padding)
-    val spacerWidth = dimensionResource(id = R.dimen.spacer_width_between_avatar_content)
-    val spacerHeight = dimensionResource(id = R.dimen.spacer_height_between_nick_content)
-    val nickColor = colorResource(id = R.color.light_blue)
-    val coroutineScope = rememberCoroutineScope()
-
-    Row(
-        modifier = Modifier.padding(rowPadding)
-    ) {
-        val painter: Painter =
-            if (tweet.sender?.avatar == stringResource(R.string.own_avatar)) {
-                painterResource(id = R.mipmap.personal)
-            } else {
-                rememberAsyncImagePainter(tweet.sender?.avatar)
-            }
-        Avatar(painter)
-
-        Spacer(modifier = Modifier.width(spacerWidth))
-
-        Column(horizontalAlignment = Alignment.Start) {
-            tweet.sender?.nick?.let {
-                Text(
-                    text = it,
-                    fontWeight = FontWeight.Bold,
-                    color = nickColor
-                )
-            }
-
-            Spacer(modifier = Modifier.height(spacerHeight))
-
-            Text(
-                text = tweet.content,
-                style = MaterialTheme.typography.body1,
-            )
-
-            Box(
-                Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.BottomEnd
-            ) {
-                LikeAndComment(onClickAction = {
-                    coroutineScope.launch {
-                        delay(500)
-                        lazyListState.scrollToItem(selectedItemIndex + 1)
-                    }
-                })
-            }
-        }
-    }
-}
-
-@Composable
-private fun Avatar(painter: Painter) {
-
-    val showDialog = remember { mutableStateOf(false) }
-    val avatarSize = dimensionResource(id = R.dimen.avatar_size)
-
-    Image(
-        painter = painter,
-        contentDescription = stringResource(R.string.avatar),
-        modifier = Modifier.size(avatarSize).clip(CircleShape)
-            .clickable { showDialog.value = true },
-        contentScale = ContentScale.Crop
-    )
-    if (showDialog.value) {
-        BigAvatar(painter) {
-            showDialog.value = false
-        }
-    }
-}
-
-@Composable
-private fun BigAvatar(painter: Painter, onDismiss: () -> Unit) {
-
-    val bigAvatarSize = dimensionResource(id = R.dimen.big_avatar_size)
-
-    Dialog(onDismissRequest = onDismiss) {
-        Box(
-            Modifier.fillMaxWidth()
-        ) {
-            Image(
-                painter = painter,
-                contentDescription = stringResource(R.string.BigAvatar),
-                modifier = Modifier.size(bigAvatarSize)
-                    .clip(CircleShape)
-                    .align(Alignment.Center),
-                contentScale = ContentScale.Crop
-            )
-        }
-    }
-}
 
 @Composable
 private fun divider() {
@@ -312,20 +227,23 @@ private fun HeaderBackground() {
 @Composable
 private fun BottomDivider() {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(bottom = 30.dp),
+        modifier = Modifier.fillMaxWidth()
+            .padding(bottom = dimensionResource(R.dimen.bottom_divider_bottom_padding)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Divider(
-            modifier = Modifier.weight(1f).padding(start = 50.dp),
+            modifier = Modifier.weight(1f)
+                .padding(start = dimensionResource(R.dimen.bottom_divider_item_divider_padding)),
             color = Color.LightGray,
         )
         Text(
             stringResource(R.string.bottom_text),
             fontSize = dimensionResource(R.dimen.font_size_medium).value.sp,
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.bottom_divider_text_horizontal))
         )
         Divider(
-            modifier = Modifier.weight(1f).padding(end = 50.dp),
+            modifier = Modifier.weight(1f)
+                .padding(end = dimensionResource(R.dimen.bottom_divider_item_divider_padding)),
             color = Color.LightGray,
         )
     }

@@ -1,6 +1,7 @@
 package com.thoughtworks.androidtrain.helloworld.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -10,6 +11,7 @@ import com.thoughtworks.androidtrain.helloworld.compose.ComposeViewModel
 import com.thoughtworks.androidtrain.helloworld.compose.NewTweetScreen
 import com.thoughtworks.androidtrain.helloworld.compose.TweetsScreen
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun NavGraph(
     navHostController: NavHostController = rememberNavController(),
