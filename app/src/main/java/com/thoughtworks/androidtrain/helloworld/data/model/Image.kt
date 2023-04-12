@@ -1,3 +1,8 @@
 package com.thoughtworks.androidtrain.helloworld.data.model
 
-data class Image(val url: String)
+import java.util.*
+
+data class Image(
+    var id: String? = UUID.randomUUID().toString(),
+    val url: String
+)

@@ -2,10 +2,7 @@
 
 package com.thoughtworks.androidtrain.helloworld.data.source.local.room.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.SenderEntity
 
 @Dao
@@ -14,8 +11,17 @@ interface SenderDao {
     suspend fun getAll(): List<SenderEntity>
 
     @Query("SELECT * FROM sender WHERE id = :id")
-    suspend fun getById(id: Long): SenderEntity
+    suspend fun getById(id: String): SenderEntity
+
+    @Query("SELECT isUser FROM sender WHERE username= :username")
+    suspend fun getByUsername(username: String?): Boolean
+
+    @Query("SELECT * FROM sender WHERE isUser= :isUser")
+    suspend fun getByIsUser(isUser: Int): SenderEntity
+
+    @Query("DELETE FROM sender WHERE isUser = 1")
+    suspend fun delete()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(senderEntity: SenderEntity): Long
+    suspend fun insert(senderEntity: SenderEntity)
 }

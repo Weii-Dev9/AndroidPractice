@@ -19,12 +19,12 @@ import androidx.room.PrimaryKey
     )]
 )
 data class TweetEntity(
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
+    @PrimaryKey
+    var id: String,
 
     @ColumnInfo(name = "sender_id", index = true)
-    var senderId: Long = 0,
+    var senderId: String,
 
     @ColumnInfo(name = "content")
-    var content: String? = null
+    var content: String
 )

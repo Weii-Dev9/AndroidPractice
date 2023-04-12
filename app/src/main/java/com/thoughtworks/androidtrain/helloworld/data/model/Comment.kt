@@ -1,6 +1,9 @@
 package com.thoughtworks.androidtrain.helloworld.data.model
 
+import java.util.*
+
 data class Comment(
-    val content: String?,
+    var id: String? = UUID.randomUUID().toString(),
+    val content: String,
     val sender: Sender
 )

@@ -56,6 +56,7 @@ fun TweetsScreen(
             lifeCycleOwner.lifecycle.removeObserver(observer)
         }
     }
+
     val tweets = tweetsViewModel.tweets.value.reversed()
     val lazyListState = rememberLazyListState()
     var selectedItemIndex by remember { mutableStateOf(-1) }
@@ -113,7 +114,10 @@ fun TweetsScreen(
                 if (keyBoardHeight != 0) {
                     Space(keyBoardHeight)
                 }
-                BottomDivider()
+            }
+            item {
+                if (tweets.size > 5)
+                    BottomDivider()
             }
         }
     }
