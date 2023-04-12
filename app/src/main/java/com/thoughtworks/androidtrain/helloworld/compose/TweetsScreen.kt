@@ -78,7 +78,7 @@ fun TweetsScreen(
     val screenHeight = configuration.screenHeightDp.dp
     val paddingValues =
         dimensionResource(id = R.dimen.tweet_item_row_padding).value * 2 + dimensionResource(R.dimen.bottom_divider_bottom_padding).value
-    val screenInt =
+    val screenHeightIntValue =
         ((screenHeight.value - paddingValues) * LocalDensity.current.density + 0.5f).toInt()
     LaunchedEffect(keyBoardHeight) {
         if (keyBoardHeight != 0) {
@@ -86,7 +86,7 @@ fun TweetsScreen(
                 delay(20)
                 lazyListState.scrollToItem(
                     selectedItemIndex + 1,
-                    -(screenInt - keyBoardHeight - itemHeight)
+                    -(screenHeightIntValue - keyBoardHeight - itemHeight)
                 )
             }
         }
@@ -94,7 +94,7 @@ fun TweetsScreen(
 
     Column(Modifier.statusBarsPadding().navigationBarsPadding().imeNestedScroll()) {
         LazyColumn(
-            Modifier.weight(1f).imeNestedScroll(),
+            Modifier.imeNestedScroll(),
             state = lazyListState,
         ) {
             item { Header(navController) }

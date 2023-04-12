@@ -27,7 +27,7 @@ import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 fun TweetItem(
     tweet: Tweet,
     index: Int,
-    onClickAction: (index: Int, rowHeight: Int) -> Unit
+    onCommentClick: (index: Int, rowHeight: Int) -> Unit
 ) {
 
     val rowPadding = dimensionResource(id = R.dimen.tweet_item_row_padding)
@@ -56,7 +56,11 @@ fun TweetItem(
                     fontWeight = FontWeight.Bold,
                     color = nickColor
                 )
-            }
+            } ?: Text(
+                text = "User",
+                fontWeight = FontWeight.Bold,
+                color = nickColor
+            )
 
             Spacer(modifier = Modifier.height(spacerHeight))
 
@@ -69,8 +73,8 @@ fun TweetItem(
                 Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.BottomEnd
             ) {
-                LikeAndComment(onClickAction = {
-                    onClickAction(index, rowHeight)
+                LikeAndComment(onCommentClick = {
+                    onCommentClick(index, rowHeight)
                 })
             }
         }

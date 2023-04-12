@@ -29,7 +29,7 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LikeAndComment(
-    onClickAction: () -> Unit,
+    onCommentClick: () -> Unit,
 ) {
 
     var expanded by remember { mutableStateOf(false) }
@@ -61,14 +61,14 @@ fun LikeAndComment(
                 )
                 Spacer(modifier = Modifier.width(dimensionResource(R.dimen.like_commend_dropdownMenu_spacer_width)))
                 Text(
-                    text = if (isLiked) stringResource(R.string.cancel) else stringResource(
+                    text = if (isLiked) stringResource(android.R.string.cancel) else stringResource(
                         R.string.like_zh
                     )
                 )
             }
             DropdownMenuItem(onClick = {
                 isDialogShown = true
-                onClickAction()
+                onCommentClick()
             }) {
                 Icon(
                     Icons.Default.ChatBubbleOutline,
@@ -84,7 +84,7 @@ fun LikeAndComment(
     if (isDialogShown) {
         expanded = false
         LaunchedEffect(Unit) {
-            delay(100)
+            delay(10)
             focusRequester.requestFocus()
             keyboardController?.show()
         }

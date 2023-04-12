@@ -52,7 +52,6 @@
     <string name="exit_editor">确定要退出编辑吗？</string>
     <string name="exit_and_no_reserve">退出后草稿不会被保存</string>
     <string name="exit">退出</string>
-    <string name="cancel">取消</string>
     <string name="menu">menu</string>
     <string name="like">like</string>
     <string name="like_zh">点赞</string>
