@@ -84,6 +84,7 @@ fun LikeAndComment(
     if (isDialogShown) {
         expanded = false
         LaunchedEffect(Unit) {
+            /*TODO: 解决焦点获取和Popup()出现的时机问题*/
             delay(10)
             focusRequester.requestFocus()
             keyboardController?.show()
