@@ -28,4 +28,11 @@
 
     <dimen name="outlined_text_field_padding">8dp</dimen>
 
+    <dimen name="bottom_divider_bottom_padding">30dp</dimen>
+    <dimen name="bottom_divider_item_divider_padding">50dp</dimen>
+    <dimen name="bottom_divider_text_horizontal">8dp</dimen>
+
+    <dimen name="like_commend_icon_size">24dp</dimen>
+    <dimen name="like_commend_dropdownMenu_spacer_width">6dp</dimen>
+
 </resources>

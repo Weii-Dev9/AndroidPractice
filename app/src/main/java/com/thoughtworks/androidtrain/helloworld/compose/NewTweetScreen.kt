@@ -137,7 +137,7 @@ fun TopAppBar(navController: NavController, tweetsViewModel: ComposeViewModel, f
             dismissButton = {
                 Alignment.End
                 Button(onClick = { showDialog = false }) {
-                    Text(stringResource(R.string.cancel))
+                    Text(stringResource(android.R.string.cancel))
                 }
             }
         )
