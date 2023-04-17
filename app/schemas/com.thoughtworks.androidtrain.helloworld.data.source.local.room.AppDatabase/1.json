@@ -128,7 +128,7 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "id"
+            "commentId"
           ]
         },
         "indices": [
