@@ -19,5 +19,5 @@ data class SenderEntity(
     var avatar: String,
 
     @ColumnInfo(name = "isUser")
-    var isUser: Boolean = false
+    var isCurrentUser: Boolean = false
 )

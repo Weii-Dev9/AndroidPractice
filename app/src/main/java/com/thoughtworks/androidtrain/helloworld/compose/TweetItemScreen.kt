@@ -27,7 +27,7 @@ import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 fun TweetItem(
     tweet: Tweet,
     index: Int,
-    onTweetItemClick: (index: Int, rowHeight: Int) -> Unit
+    onCommentClick: (index: Int, rowHeight: Int) -> Unit
 ) {
 
     val rowPadding = dimensionResource(id = R.dimen.tweet_item_row_padding)
@@ -74,7 +74,7 @@ fun TweetItem(
                 contentAlignment = Alignment.BottomEnd
             ) {
                 LikeAndComment(onCommentClick = {
-                    onTweetItemClick(index, rowHeight)
+                    onCommentClick(index, rowHeight)
                 })
             }
         }

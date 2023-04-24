@@ -3,12 +3,12 @@ package com.thoughtworks.androidtrain.helloworld
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.thoughtworks.androidtrain.helloworld.navigation.NavGraph
-import dagger.hilt.android.AndroidEntryPoint
 import androidx.lifecycle.lifecycleScope
 import com.thoughtworks.androidtrain.helloworld.data.source.DataSource
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.AppDatabase
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.SenderEntity
+import com.thoughtworks.androidtrain.helloworld.navigation.NavGraph
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject

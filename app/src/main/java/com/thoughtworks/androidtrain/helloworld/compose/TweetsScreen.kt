@@ -170,7 +170,9 @@ private fun TopAppBar(navController: NavController) {
             }
         },
         actions = {
-            IconButton(onClick = { navController.navigate(Screen.NewTweetScreen.route) }) {
+            IconButton(onClick = {
+                navController.navigate(Screen.NewTweetScreen.route)
+            }) {
                 Icon(
                     painter = painterResource(id = R.mipmap.camera),
                     modifier = Modifier.size(actionIconSize)

@@ -19,7 +19,7 @@ class DataSourceImpl @Inject constructor(
         val fetchRemoteTweets = remoteStorage.fetchTweets()
 
         fetchRemoteTweets.forEach { tweet ->
-            localStorage.insertRemoteTweet(tweet)
+            localStorage.insertTweet(tweet)
         }
     }
 
@@ -33,7 +33,6 @@ class DataSourceImpl @Inject constructor(
 
     override suspend fun insertTweet(tweet: Tweet) {
         withContext(Dispatchers.IO) {
-            tweet.sender?.username = "Weii"
             localStorage.insertTweet(tweet)
         }
     }

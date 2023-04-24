@@ -20,7 +20,7 @@ fun SenderEntity.toSender() = Sender(
     username = username,
     nick = nick,
     avatar = avatar,
-    isUser = isUser
+    isCurrentUser = isCurrentUser
 )
 
 fun ImageEntity.toImage() = Image(
@@ -44,7 +44,7 @@ fun Sender.toEntity(): SenderEntity {
         username = username,
         nick = nick,
         avatar = avatar,
-        isUser = isUser
+        isCurrentUser = isCurrentUser
     )
 }
 

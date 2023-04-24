@@ -4,7 +4,7 @@ import java.util.*
 
 data class Sender(
     var id: String? = UUID.randomUUID().toString(),
-    var isUser: Boolean = false,
+    var isCurrentUser: Boolean = false,
     var username: String = "",
     val nick: String = "",
     val avatar: String = ""

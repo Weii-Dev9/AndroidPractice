@@ -9,6 +9,4 @@ interface LocalStorage {
 
     fun getTweets(): Flow<List<Tweet>>
     suspend fun insertTweet(tweet: Tweet)
-    suspend fun insertRemoteTweet(tweet: Tweet)
-
 }
