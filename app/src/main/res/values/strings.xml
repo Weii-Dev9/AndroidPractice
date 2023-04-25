@@ -44,7 +44,7 @@
     <string name="Header_Background">Header Background</string>
     <string name="personal_nick">Weii</string>
     <string name="background">朋友圈背景</string>
-    <string name="own_avatar">own pic</string>
+    <string name="own_avatar">own_pic</string>
     <string name="NowThinking">这一刻的想法...</string>
     <string name="LightGrayWhite">#F4F4F4</string>
     <string name="public_words">发表文字</string>

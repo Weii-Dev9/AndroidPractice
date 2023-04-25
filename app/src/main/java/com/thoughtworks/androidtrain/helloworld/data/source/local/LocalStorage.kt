@@ -8,7 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface LocalStorage {
 
     fun getTweets(): Flow<List<Tweet>>
-    suspend fun updateTweets(tweets: List<Tweet>)
-    suspend fun insertTweet(tweet: Tweet): Long
-
+    suspend fun insertTweet(tweet: Tweet)
 }

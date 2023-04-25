@@ -15,7 +15,7 @@ import com.thoughtworks.androidtrain.helloworld.compose.TweetsScreen
 @Composable
 fun NavGraph(
     navHostController: NavHostController = rememberNavController(),
-    tweetsViewModel: ComposeViewModel = hiltViewModel()
+    tweetsViewModel: ComposeViewModel = hiltViewModel(),
 ) {
     NavHost(navController = navHostController, startDestination = Screen.TweetsScreen.route) {
         composable(route = Screen.TweetsScreen.route) {

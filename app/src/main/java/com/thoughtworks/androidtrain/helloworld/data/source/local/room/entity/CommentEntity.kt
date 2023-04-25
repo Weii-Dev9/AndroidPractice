@@ -21,14 +21,14 @@ import androidx.room.PrimaryKey
     )]
 )
 data class CommentEntity(
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
+    @PrimaryKey
+    var commentId: String,
 
     @ColumnInfo(name = "tweet_id", index = true)
-    var tweetId: Long = 0,
+    var tweetId: String,
 
     @ColumnInfo(name = "sender_id", index = true)
-    var senderId: Long = 0,
+    var senderId: String,
 
     @ColumnInfo(name = "content")
     var content: String? = null

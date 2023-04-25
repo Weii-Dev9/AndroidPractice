@@ -16,12 +16,12 @@ import androidx.room.PrimaryKey
     )]
 )
 data class ImageEntity(
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
+    @PrimaryKey
+    var id: String,
 
     @ColumnInfo(name = "tweet_id", index = true)
-    var tweetId: Long = 0,
+    var tweetId: String,
 
     @ColumnInfo(name = "url")
-    var url: String? = null
+    var url: String
 )

@@ -15,8 +15,11 @@ interface TweetDao {
     fun getAll(): Flow<List<TweetEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(tweetEntity: TweetEntity): Long
+    suspend fun insert(tweetEntity: TweetEntity)
 
-    @Query("SELECT * FROM tweet WHERE id = :tweetId")
-    suspend fun getTweetById(tweetId: Long): TweetEntity
+    @Query("SELECT * FROM tweet WHERE id = :id")
+    suspend fun getTweetById(id: String): TweetEntity
+
+    @Query("SELECT COUNT(*) > 10 FROM tweet")
+    suspend fun getCountTweet(): Boolean
 }

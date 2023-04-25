@@ -6,15 +6,18 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "sender")
 data class SenderEntity(
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
+    @PrimaryKey
+    var id: String,
 
     @ColumnInfo(name = "username")
-    var username: String? = null,
+    var username: String,
 
     @ColumnInfo(name = "nick")
-    var nick: String? = null,
+    var nick: String,
 
     @ColumnInfo(name = "avatar")
-    var avatar: String? = null
+    var avatar: String,
+
+    @ColumnInfo(name = "isUser")
+    var isCurrentUser: Boolean = false
 )
