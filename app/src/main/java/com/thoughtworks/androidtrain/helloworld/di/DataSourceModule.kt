@@ -7,8 +7,6 @@ import com.thoughtworks.androidtrain.helloworld.data.source.DataSourceImpl
 import com.thoughtworks.androidtrain.helloworld.data.source.local.LocalStorage
 import com.thoughtworks.androidtrain.helloworld.data.source.local.LocalStorageImpl
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.AppDatabase
-import com.thoughtworks.androidtrain.helloworld.data.source.local.room.MIGRATION_1_2
-import com.thoughtworks.androidtrain.helloworld.data.source.local.room.MIGRATION_2_3
 import com.thoughtworks.androidtrain.helloworld.data.source.remote.RemoteData
 import com.thoughtworks.androidtrain.helloworld.data.source.remote.RemoteDataImpl
 import dagger.Module
@@ -41,8 +39,6 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideDataBase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "db_tweet").addMigrations(
-            MIGRATION_1_2, MIGRATION_2_3
-        ).build()
+        return Room.databaseBuilder(context, AppDatabase::class.java, "db_tweet").build()
     }
 }

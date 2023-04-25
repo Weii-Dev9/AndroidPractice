@@ -4,14 +4,12 @@ import android.annotation.SuppressLint
 import com.thoughtworks.androidtrain.helloworld.data.model.Image
 import com.thoughtworks.androidtrain.helloworld.data.model.Tweet
 import com.thoughtworks.androidtrain.helloworld.data.source.local.room.AppDatabase
-import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.TweetEntity
 import com.thoughtworks.androidtrain.helloworld.data.source.toEntity
 import com.thoughtworks.androidtrain.helloworld.data.source.toImage
 import com.thoughtworks.androidtrain.helloworld.data.source.toSender
 import com.thoughtworks.androidtrain.helloworld.data.source.toTweet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.util.UUID
 import javax.inject.Inject
 
 @SuppressLint("NotConstructor")
@@ -38,7 +36,7 @@ class LocalStorageImpl @Inject constructor(private val db: AppDatabase) : LocalS
 
     override suspend fun insertTweet(tweet: Tweet) {
         val tweetEntity = tweet.toEntity()
-        if (tweet.sender!!.isCurrentUser) {
+        if (tweet.sender?.isCurrentUser == true) {
             val senderEntity = db.senderDao().getByIsUser(1)
             tweet.sender = senderEntity.toSender()
             tweetEntity.senderId = senderEntity.id

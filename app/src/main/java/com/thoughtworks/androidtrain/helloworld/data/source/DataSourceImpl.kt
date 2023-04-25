@@ -17,7 +17,6 @@ class DataSourceImpl @Inject constructor(
 
     override suspend fun fetchRemoteTweets() = withContext(Dispatchers.IO) {
         val fetchRemoteTweets = remoteStorage.fetchTweets()
-
         fetchRemoteTweets.forEach { tweet ->
             localStorage.insertTweet(tweet)
         }

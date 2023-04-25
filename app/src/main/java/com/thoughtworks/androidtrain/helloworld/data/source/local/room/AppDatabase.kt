@@ -15,7 +15,7 @@ import com.thoughtworks.androidtrain.helloworld.data.source.local.room.entity.Tw
 
 @Database(
     entities = [TweetEntity::class, SenderEntity::class, ImageEntity::class, CommentEntity::class],
-    version = 2
+    version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun tweetDao(): TweetDao
@@ -23,6 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun imageDao(): ImageDao
     abstract fun commentDao(): CommentDao
 }
+
 val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("ALTER TABLE sender ADD COLUMN isUser INTEGER NOT NULL DEFAULT 0")

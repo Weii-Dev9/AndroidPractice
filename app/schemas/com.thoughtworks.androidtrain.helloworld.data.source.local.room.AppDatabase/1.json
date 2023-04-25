@@ -87,7 +87,7 @@
             "notNull": true
           },
           {
-            "fieldPath": "isUser",
+            "fieldPath": "isCurrentUser",
             "columnName": "isUser",
             "affinity": "INTEGER",
             "notNull": true
@@ -128,7 +128,7 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "commentId"
+            "id"
           ]
         },
         "indices": [
